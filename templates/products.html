@@ -1,0 +1,1111 @@
+{% extends "base.html" %}
+
+{% block title %}Products - Linux Shop{% endblock %}
+
+{% block content %}
+<style>
+    /* Modern Inline CSS for Products Page */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+    :root {
+        --primary: #6366f1;
+        --primary-dark: #4f46e5;
+        --primary-light: #818cf8;
+        --secondary: #8b5cf6;
+        --accent: #ec4899;
+        --success: #10b981;
+        --warning: #f59e0b;
+        --danger: #ef4444;
+        --info: #3b82f6;
+        --dark: #1e293b;
+        --light: #f8fafc;
+        --gray-50: #f9fafb;
+        --gray-100: #f3f4f6;
+        --gray-200: #e5e7eb;
+        --gray-300: #d1d5db;
+        --gray-400: #9ca3af;
+        --gray-500: #6b7280;
+        --gray-600: #4b5563;
+        --gray-700: #374151;
+        --gray-800: #1f2937;
+        --gray-900: #111827;
+        
+        --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+        --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+        --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        
+        --radius-sm: 0.375rem;
+        --radius: 0.5rem;
+        --radius-md: 0.75rem;
+        --radius-lg: 1rem;
+        --radius-xl: 1.5rem;
+        
+        --transition-fast: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+        --transition: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+        --transition-bounce: 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Inter', sans-serif;
+        background: linear-gradient(135deg, var(--gray-50) 0%, #ffffff 100%);
+        color: var(--gray-800);
+        line-height: 1.6;
+    }
+
+    .container {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 0 2rem;
+    }
+
+    /* Page Header */
+    h1 {
+        font-size: clamp(2rem, 4vw, 2.5rem);
+        font-weight: 800;
+        color: var(--gray-900);
+        margin: 2rem 0;
+        position: relative;
+        display: inline-block;
+        animation: slideInDown 0.6s ease-out;
+    }
+
+    h1::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 0;
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary), var(--accent));
+        border-radius: var(--radius-full);
+        animation: expandWidth 0.8s ease-out 0.3s both;
+    }
+
+    /* Filter Form */
+    form.row {
+        background: white;
+        padding: 2rem;
+        border-radius: var(--radius-xl);
+        box-shadow: var(--shadow-lg);
+        margin-bottom: 2.5rem !important;
+        border: 1px solid var(--gray-200);
+        animation: fadeInUp 0.8s ease-out;
+        transition: box-shadow var(--transition);
+    }
+
+    form.row:hover {
+        box-shadow: var(--shadow-xl);
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: var(--gray-700);
+        margin-bottom: 0.5rem;
+        font-size: 0.95rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .form-control, .form-select {
+        border: 2px solid var(--gray-200);
+        border-radius: var(--radius-lg);
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+        transition: all var(--transition-fast);
+        background: var(--gray-50);
+    }
+
+    .form-control:focus, .form-select:focus {
+        border-color: var(--primary);
+        outline: none;
+        box-shadow: 0 0 0 4px var(--primary-light);
+        background: white;
+    }
+
+    .form-control::placeholder {
+        color: var(--gray-400);
+    }
+
+    /* Filter Buttons */
+    .btn-primary {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: var(--radius-lg);
+        font-weight: 600;
+        transition: all var(--transition-bounce);
+        box-shadow: var(--shadow);
+        width: 100%;
+    }
+
+    .btn-primary:hover {
+        background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-xl);
+    }
+
+    .btn-outline-secondary {
+        background: transparent;
+        color: var(--gray-700);
+        border: 2px solid var(--gray-300);
+        padding: 0.75rem 1.5rem;
+        border-radius: var(--radius-lg);
+        font-weight: 600;
+        transition: all var(--transition);
+        width: 100%;
+        margin-top: 0.5rem;
+    }
+
+    .btn-outline-secondary:hover {
+        background: var(--gray-200);
+        border-color: var(--gray-400);
+        transform: translateY(-2px);
+    }
+
+    /* Product Grid */
+    .row.mt-3 {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 2rem;
+        margin: 0 !important;
+        animation: fadeIn 1s ease-out;
+    }
+
+    .col-md-4 {
+        padding: 0 !important;
+        width: 100% !important;
+        animation: fadeInUp 0.6s ease-out;
+        animation-fill-mode: both;
+    }
+
+    {% for i in range(1, 13) %}
+    .col-md-4:nth-child({{ i }}) {
+        animation-delay: {{ 0.05 * i }}s;
+    }
+    {% endfor %}
+
+    /* Product Card */
+    .card {
+        background: white;
+        border: 1px solid var(--gray-200) !important;
+        border-radius: var(--radius-xl) !important;
+        overflow: hidden;
+        transition: all var(--transition);
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        box-shadow: var(--shadow);
+    }
+
+    .card:hover {
+        transform: translateY(-8px);
+        box-shadow: var(--shadow-xl);
+        border-color: transparent !important;
+    }
+
+    .card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary), var(--accent));
+        transform: scaleX(0);
+        transition: transform 0.5s ease;
+        transform-origin: left;
+        z-index: 2;
+    }
+
+    .card:hover::before {
+        transform: scaleX(1);
+    }
+
+    /* Product Image */
+    .card-img-top {
+        height: 250px !important;
+        width: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+        border-bottom: 1px solid var(--gray-200);
+    }
+
+    .card:hover .card-img-top {
+        transform: scale(1.05);
+    }
+
+    /* No Image Placeholder */
+    .card .bg-light {
+        height: 250px !important;
+        background: linear-gradient(135deg, var(--gray-200), var(--gray-300)) !important;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .card .bg-light::before {
+        content: '📷';
+        position: absolute;
+        font-size: 3rem;
+        opacity: 0.3;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .card .bg-light span {
+        font-size: 1rem;
+        font-weight: 500;
+        color: var(--gray-600) !important;
+        z-index: 1;
+    }
+
+    /* Card Body */
+    .card-body {
+        padding: 1.5rem !important;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        background: linear-gradient(180deg, white 0%, var(--gray-50) 100%);
+    }
+
+    .card-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--gray-900);
+        margin-bottom: 0.5rem;
+        line-height: 1.4;
+        transition: color var(--transition);
+    }
+
+    .card:hover .card-title {
+        color: var(--primary);
+    }
+
+    .card-text {
+        color: var(--gray-600);
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin-bottom: 1rem;
+        flex: 1;
+    }
+
+    /* Price */
+    .h5.text-success {
+        font-size: 1.5rem !important;
+        font-weight: 700;
+        color: var(--primary) !important;
+        margin: 0.5rem 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .h5.text-success::before {
+        content: '💰';
+        font-size: 1.25rem;
+        opacity: 0.8;
+    }
+
+    /* Stock Badge */
+    .text-muted {
+        color: var(--gray-600) !important;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin: 0.5rem 0 1rem;
+        padding: 0.5rem 1rem;
+        background: var(--gray-100);
+        border-radius: var(--radius-full);
+        width: fit-content;
+    }
+
+    .badge {
+        padding: 0.35rem 0.75rem;
+        border-radius: var(--radius-full);
+        font-weight: 600;
+        font-size: 0.75rem;
+        animation: pulse 2s infinite;
+    }
+
+    .badge.bg-warning {
+        background: var(--warning) !important;
+        color: var(--gray-900);
+    }
+
+    .badge.bg-danger {
+        background: var(--danger) !important;
+        color: white;
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+
+    /* Action Buttons */
+    .d-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem !important;
+    }
+
+    .btn {
+        padding: 0.75rem 1rem;
+        border-radius: var(--radius-lg);
+        font-weight: 600;
+        font-size: 0.95rem;
+        transition: all var(--transition-bounce);
+        border: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        transform: translate(-50%, -50%);
+        transition: width 0.6s, height 0.6s;
+    }
+
+    .btn:hover::before {
+        width: 300px;
+        height: 300px;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: white;
+        box-shadow: var(--shadow);
+    }
+
+    .btn-primary:hover {
+        background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-xl);
+    }
+
+    .btn-group {
+        display: flex;
+        gap: 0.5rem;
+        width: 100%;
+    }
+
+    .btn-group .btn {
+        flex: 1;
+        padding: 0.6rem;
+        font-size: 0.9rem;
+    }
+
+    .btn-outline-secondary {
+        background: transparent;
+        color: var(--gray-700);
+        border: 2px solid var(--gray-300);
+    }
+
+    .btn-outline-secondary:hover {
+        background: var(--gray-200);
+        border-color: var(--gray-400);
+    }
+
+    .btn-outline-warning {
+        background: transparent;
+        color: var(--warning);
+        border: 2px solid var(--warning);
+    }
+
+    .btn-outline-warning:hover {
+        background: var(--warning);
+        color: white;
+    }
+
+    .btn-outline-danger {
+        background: transparent;
+        color: var(--danger);
+        border: 2px solid var(--danger);
+    }
+
+    .btn-outline-danger:hover {
+        background: var(--danger);
+        color: white;
+    }
+
+    .btn-sm {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.85rem;
+    }
+
+    /* Modals */
+    .modal-content {
+        border: none;
+        border-radius: var(--radius-xl);
+        overflow: hidden;
+        box-shadow: var(--shadow-2xl);
+        animation: slideInUp 0.4s ease-out;
+    }
+
+    .modal-header {
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        color: white;
+        border: none;
+        padding: 1.5rem;
+    }
+
+    .modal-header .btn-close {
+        filter: brightness(0) invert(1);
+        opacity: 0.8;
+        transition: opacity var(--transition);
+    }
+
+    .modal-header .btn-close:hover {
+        opacity: 1;
+    }
+
+    .modal-title {
+        font-weight: 700;
+        font-size: 1.25rem;
+    }
+
+    .modal-body {
+        padding: 2rem;
+    }
+
+    .modal-footer {
+        border-top: 2px solid var(--gray-200);
+        padding: 1.5rem;
+    }
+
+    /* No Products Alert */
+    .alert-info {
+        background: linear-gradient(135deg, var(--info), #2563eb);
+        color: white;
+        border: none;
+        border-radius: var(--radius-xl);
+        padding: 3rem;
+        text-align: center;
+        margin: 2rem 0;
+        animation: fadeInUp 0.8s ease-out;
+    }
+
+    .alert-info h4 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+
+    .alert-info p {
+        font-size: 1.1rem;
+        margin-bottom: 2rem;
+        opacity: 0.95;
+    }
+
+    .alert-info .btn-primary {
+        background: white;
+        color: var(--info);
+        padding: 1rem 2rem;
+        font-size: 1.1rem;
+    }
+
+    .alert-info .btn-primary:hover {
+        background: var(--gray-100);
+        transform: translateY(-2px);
+    }
+
+    /* Animations */
+    @keyframes slideInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    @keyframes expandWidth {
+        from { width: 0; }
+        to { width: 80px; }
+    }
+
+    @keyframes slideInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Toast Notification */
+    .toast-notification {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        background: linear-gradient(135deg, var(--success), #059669);
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-2xl);
+        transform: translateX(400px);
+        transition: transform 0.3s ease;
+        z-index: 9999;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .toast-notification.show {
+        transform: translateX(0);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .container {
+            padding: 0 1rem;
+        }
+        
+        form.row {
+            padding: 1.5rem;
+        }
+        
+        .row.mt-3 {
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+        
+        .card-img-top,
+        .card .bg-light {
+            height: 200px !important;
+        }
+        
+        .card-body {
+            padding: 1rem !important;
+        }
+        
+        .h5.text-success {
+            font-size: 1.25rem !important;
+        }
+        
+        .btn-group {
+            flex-direction: column;
+        }
+        
+        .modal-body {
+            padding: 1rem;
+        }
+        
+        .modal-body .row {
+            flex-direction: column;
+        }
+        
+        .alert-info {
+            padding: 2rem;
+        }
+        
+        .alert-info h4 {
+            font-size: 1.5rem;
+        }
+        
+        .toast-notification {
+            left: 1rem;
+            right: 1rem;
+            bottom: 1rem;
+            transform: translateY(400px);
+        }
+    }
+
+    @media (max-width: 480px) {
+        h1 {
+            font-size: 1.75rem;
+        }
+        
+        .form-control, .form-select, .btn {
+            font-size: 0.9rem;
+        }
+        
+        .card-title {
+            font-size: 1.1rem;
+        }
+        
+        .card-text {
+            font-size: 0.9rem;
+        }
+        
+        .badge {
+            font-size: 0.7rem;
+        }
+    }
+
+    /* Dark Mode */
+    @media (prefers-color-scheme: dark) {
+        body {
+            background: linear-gradient(135deg, var(--gray-900), var(--gray-800));
+            color: var(--gray-200);
+        }
+        
+        form.row,
+        .card,
+        .modal-content {
+            background: var(--gray-800);
+            border-color: var(--gray-700) !important;
+        }
+        
+        .card-body {
+            background: linear-gradient(180deg, var(--gray-800), var(--gray-900));
+        }
+        
+        .form-control,
+        .form-select {
+            background: var(--gray-700);
+            border-color: var(--gray-600);
+            color: white;
+        }
+        
+        .form-control:focus,
+        .form-select:focus {
+            background: var(--gray-600);
+        }
+        
+        .form-label {
+            color: var(--gray-300);
+        }
+        
+        .card-title {
+            color: white;
+        }
+        
+        .card-text {
+            color: var(--gray-400);
+        }
+        
+        .text-muted {
+            background: var(--gray-700);
+            color: var(--gray-400) !important;
+        }
+        
+        .btn-outline-secondary {
+            color: var(--gray-300);
+            border-color: var(--gray-600);
+        }
+        
+        .btn-outline-secondary:hover {
+            background: var(--gray-700);
+            color: white;
+        }
+        
+        .card .bg-light {
+            background: linear-gradient(135deg, var(--gray-700), var(--gray-600)) !important;
+        }
+        
+        .modal-body,
+        .modal-footer {
+            background: var(--gray-800);
+            color: var(--gray-300);
+        }
+        
+        .modal-footer {
+            border-top-color: var(--gray-700);
+        }
+    }
+</style>
+
+<!-- Page Header -->
+<h1><i class="bi bi-grid"></i> All Products</h1>
+
+<!-- Filter Form - Original Structure Preserved -->
+<form method="get" class="row g-2 align-items-end mb-4">
+    <div class="col-md-4">
+        <label class="form-label"><i class="bi bi-search"></i> Search</label>
+        <input type="search" name="q" value="{{ q or request.args.get('q','') }}" class="form-control" placeholder="Search by name or description...">
+    </div>
+    <div class="col-md-2">
+        <label class="form-label"><i class="bi bi-currency-dollar"></i> Min Price</label>
+        <input type="text" name="min_price" value="{{ min_price or request.args.get('min_price','') }}" class="form-control" placeholder="0">
+    </div>
+    <div class="col-md-2">
+        <label class="form-label"><i class="bi bi-currency-dollar"></i> Max Price</label>
+        <input type="text" name="max_price" value="{{ max_price or request.args.get('max_price','') }}" class="form-control" placeholder="10000">
+    </div>
+    <div class="col-md-2">
+        <label class="form-label"><i class="bi bi-sort-down"></i> Sort</label>
+        <select name="sort" class="form-select">
+            <option value="" {% if not sort %}selected{% endif %}>✨ Newest</option>
+            <option value="price_asc" {% if sort=='price_asc' %}selected{% endif %}>💰 Price: Low to High</option>
+            <option value="price_desc" {% if sort=='price_desc' %}selected{% endif %}>💰 Price: High to Low</option>
+        </select>
+    </div>
+    <div class="col-md-2">
+        <button type="submit" class="btn btn-primary">
+            <i class="bi bi-funnel"></i> Filter
+        </button>
+        <a href="{{ url_for('products') }}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-counterclockwise"></i> Reset
+        </a>
+    </div>
+</form>
+
+<div class="row mt-3">
+    {% for product in products %}
+    <div class="col-md-4 mb-4" data-product-id="{{ product.id }}" data-product-name="{{ product.name }}" data-product-price="{{ product.price }}">
+        <div class="card h-100">
+            {% if product.image_url %}
+            <img src="{{ product.image_url }}"
+                srcset="{{ product.image_url.replace('.','_med.') }} 400w, {{ product.image_url.replace('.','_thumb.') }} 200w"
+                sizes="(max-width: 600px) 200px, 400px"
+                class="card-img-top" 
+                alt="{{ product.name }}"
+                onclick="openQuickView({{ product.id }})"
+                style="cursor: pointer;">
+            {% else %}
+            <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px; cursor: pointer;" onclick="openQuickView({{ product.id }})">
+                <span class="text-muted">No image</span>
+            </div>
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ product.name }}</h5>
+                <p class="card-text">{{ product.description[:100] }}{% if product.description|length > 100 %}...{% endif %}</p>
+                <p class="h5 text-success">{{ product.price|fcfa }} FCFA</p>
+                <p class="text-muted">
+                    <i class="bi bi-box"></i> Stock: {{ product.quantity }}
+                    {% if product.quantity <= 5 and product.quantity > 0 %}
+                    <span class="badge bg-warning"><i class="bi bi-exclamation-triangle"></i> Low Stock</span>
+                    {% elif product.quantity == 0 %}
+                    <span class="badge bg-danger"><i class="bi bi-x-circle"></i> Out of Stock</span>
+                    {% endif %}
+                </p>
+                <div class="d-grid gap-2">
+                    {% if product.quantity > 0 %}
+                    <a href="{{ url_for('add_to_cart', product_id=product.id) }}" class="btn btn-primary add-to-cart">
+                        <i class="bi bi-cart-plus"></i> Add to Cart
+                    </a>
+                    {% else %}
+                    <button class="btn btn-secondary" disabled>
+                        <i class="bi bi-cart-x"></i> Out of Stock
+                    </button>
+                    {% endif %}
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#viewModal{{ product.id }}">
+                            <i class="bi bi-eye"></i> Quick View
+                        </button>
+                        <a href="{{ url_for('product_detail', id=product.id) }}" class="btn btn-outline-info btn-sm">
+                            <i class="bi bi-box-arrow-up-right"></i> Details
+                        </a>
+                        {% if session.get('role') == 'admin' %}
+                        <a href="{{ url_for('edit_product', id=product.id) }}" class="btn btn-outline-warning btn-sm">
+                            <i class="bi bi-pencil"></i> Edit
+                        </a>
+                        <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ product.id }}">
+                            <i class="bi bi-trash"></i> Delete
+                        </button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Modal - Enhanced with modern styling -->
+    <div class="modal fade" id="viewModal{{ product.id }}" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="bi bi-info-circle"></i> {{ product.name }}
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-4">
+                        <div class="col-md-6 d-flex align-items-center justify-content-center">
+                            {% if product.image_url %}
+                            <img src="{{ product.image_url }}" alt="{{ product.name }}" class="img-fluid rounded" style="max-height:400px; object-fit:contain; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg);">
+                            {% else %}
+                            <div class="bg-light w-100 d-flex align-items-center justify-content-center" style="height:300px; border-radius: var(--radius-lg);">
+                                <span class="text-muted">No image available</span>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <h3 class="text-success mb-3">{{ product.price|fcfa }} FCFA</h3>
+                            <p class="lead">{{ product.description }}</p>
+                            <div class="mt-4 p-3 bg-light rounded">
+                                <p class="mb-2"><strong><i class="bi bi-box"></i> Stock Status:</strong></p>
+                                {% if product.quantity > 0 %}
+                                <p class="text-success">
+                                    <i class="bi bi-check-circle"></i> {{ product.quantity }} units available
+                                </p>
+                                {% else %}
+                                <p class="text-danger">
+                                    <i class="bi bi-x-circle"></i> Out of stock
+                                </p>
+                                {% endif %}
+                                <p><strong><i class="bi bi-upc-scan"></i> Product ID:</strong> {{ product.id }}</p>
+                            </div>
+                            <div class="d-flex gap-2 mt-4">
+                                <a href="{{ url_for('add_to_cart', product_id=product.id) }}" class="btn btn-primary flex-fill">
+                                    <i class="bi bi-cart-plus"></i> Add to Cart
+                                </a>
+                                <a href="{{ url_for('product_detail', id=product.id) }}" class="btn btn-outline-secondary flex-fill">
+                                    <i class="bi bi-box-arrow-up-right"></i> Full Page
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Modal - Enhanced with warning styling -->
+    {% if session.get('role') == 'admin' %}
+    <div class="modal fade" id="deleteModal{{ product.id }}" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">
+                        <i class="bi bi-exclamation-triangle-fill"></i> Confirm Delete
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center mb-4">
+                        <i class="bi bi-exclamation-triangle" style="font-size: 4rem; color: var(--danger);"></i>
+                    </div>
+                    <p class="lead text-center">Are you sure you want to delete <strong>{{ product.name }}</strong>?</p>
+                    <p class="text-danger text-center"><strong>Warning:</strong> This action cannot be undone!</p>
+                    
+                    {% if product.command_items %}
+                    <div class="alert alert-warning">
+                        <i class="bi bi-exclamation-triangle"></i>
+                        This product is in {{ product.command_items|length }} order(s).
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x"></i> Cancel
+                    </button>
+                    <form action="{{ url_for('delete_product', id=product.id) }}" method="POST" class="d-inline">
+                        <button type="submit" class="btn btn-danger">
+                            <i class="bi bi-trash"></i> Delete Product
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+</div>
+
+{% if not products %}
+<div class="alert-info">
+    <i class="bi bi-emoji-frown" style="font-size: 4rem;"></i>
+    <h4>No products found!</h4>
+    <p>There are no products in the database yet.</p>
+    {% if session.get('role') == 'admin' %}
+    <a href="{{ url_for('add_product') }}" class="btn btn-primary btn-lg">
+        <i class="bi bi-plus-circle"></i> Add Your First Product
+    </a>
+    {% endif %}
+</div>
+{% endif %}
+
+<!-- Toast Container -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3"></div>
+
+<script>
+    // Modern JavaScript Features - Preserving All Original Functionality
+    (function() {
+        'use strict';
+
+        // Toast notification system
+        function showToast(message, type = 'success', icon = 'bi-check-circle-fill') {
+            const toastContainer = document.querySelector('.toast-container');
+            const toastId = 'toast-' + Date.now();
+            
+            const colors = {
+                success: 'linear-gradient(135deg, #10b981, #059669)',
+                warning: 'linear-gradient(135deg, #f59e0b, #d97706)',
+                danger: 'linear-gradient(135deg, #ef4444, #dc2626)',
+                info: 'linear-gradient(135deg, #3b82f6, #2563eb)'
+            };
+            
+            const toastHtml = `
+                <div id="${toastId}" class="toast-notification show" style="background: ${colors[type] || colors.success}">
+                    <i class="bi ${icon}"></i>
+                    <div>${message}</div>
+                </div>
+            `;
+            
+            toastContainer.insertAdjacentHTML('beforeend', toastHtml);
+            
+            setTimeout(() => {
+                const toast = document.getElementById(toastId);
+                if (toast) {
+                    toast.classList.remove('show');
+                    setTimeout(() => toast.remove(), 300);
+                }
+            }, 3000);
+        }
+
+        // Quick view function
+        window.openQuickView = function(productId) {
+            const modal = new bootstrap.Modal(document.getElementById(`viewModal${productId}`));
+            modal.show();
+        };
+
+        // Add to cart with animation
+        document.querySelectorAll('.add-to-cart').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const card = this.closest('.card');
+                const productName = card.querySelector('.card-title').textContent;
+                
+                // Animate button
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 200);
+                
+                // Show toast
+                showToast(`${productName} added to cart!`, 'success', 'bi-cart-check-fill');
+                
+                // Navigate after animation
+                setTimeout(() => {
+                    window.location.href = this.href;
+                }, 500);
+            });
+        });
+
+        // Filter form animation
+        const filterForm = document.querySelector('form');
+        if (filterForm) {
+            filterForm.addEventListener('submit', function() {
+                const submitBtn = this.querySelector('button[type="submit"]');
+                submitBtn.innerHTML = '<i class="bi bi-arrow-repeat"></i> Filtering...';
+                submitBtn.disabled = true;
+            });
+        }
+
+        // Live search preview (optional enhancement)
+        const searchInput = document.querySelector('input[name="q"]');
+        if (searchInput) {
+            let timeout;
+            searchInput.addEventListener('input', function() {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => {
+                    if (this.value.length > 2 || this.value.length === 0) {
+                        this.closest('form').submit();
+                    }
+                }, 1000);
+            });
+        }
+
+        // Stock level indicators
+        document.querySelectorAll('.text-muted').forEach(stockElement => {
+            const badge = stockElement.querySelector('.badge');
+            if (badge && badge.classList.contains('bg-warning')) {
+                // Low stock - add pulsing effect
+                badge.style.animation = 'pulse 1s infinite';
+            }
+        });
+
+        // Modal enhancement - close with ESC
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const openModals = document.querySelectorAll('.modal.show');
+                openModals.forEach(modal => {
+                    const modalInstance = bootstrap.Modal.getInstance(modal);
+                    if (modalInstance) {
+                        modalInstance.hide();
+                    }
+                });
+            }
+        });
+
+        // Filter form validation
+        const minPrice = document.querySelector('input[name="min_price"]');
+        const maxPrice = document.querySelector('input[name="max_price"]');
+        
+        if (minPrice && maxPrice) {
+            minPrice.addEventListener('input', validatePrices);
+            maxPrice.addEventListener('input', validatePrices);
+            
+            function validatePrices() {
+                const min = parseFloat(minPrice.value) || 0;
+                const max = parseFloat(maxPrice.value) || Infinity;
+                
+                if (min > max) {
+                    maxPrice.setCustomValidity('Max price must be greater than min price');
+                    maxPrice.classList.add('is-invalid');
+                } else {
+                    maxPrice.setCustomValidity('');
+                    maxPrice.classList.remove('is-invalid');
+                }
+            }
+        }
+
+        // Product hover effect for quick actions
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.zIndex = '10';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.zIndex = '1';
+            });
+        });
+
+        // Initialize tooltips if any
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.map(function(tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+
+        console.log('✨ Products page modern features loaded');
+    })();
+</script>
+{% endblock %}

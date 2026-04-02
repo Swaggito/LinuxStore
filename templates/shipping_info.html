@@ -1,0 +1,1100 @@
+{% extends "base.html" %}
+
+{% block title %}Shipping Information - ShopMetuge{% endblock %}
+
+{% block content %}
+<style>
+    /* Modern Shipping Information Page Styling */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+    :root {
+        --primary: #6366f1;
+        --primary-dark: #4f46e5;
+        --primary-light: #818cf8;
+        --secondary: #8b5cf6;
+        --success: #10b981;
+        --success-dark: #059669;
+        --success-light: #d1fae5;
+        --danger: #ef4444;
+        --danger-light: #fee2e2;
+        --warning: #f59e0b;
+        --warning-dark: #d97706;
+        --warning-light: #fef3c7;
+        --info: #3b82f6;
+        --info-dark: #2563eb;
+        --info-light: #dbeafe;
+        --gray-50: #f9fafb;
+        --gray-100: #f3f4f6;
+        --gray-200: #e5e7eb;
+        --gray-300: #d1d5db;
+        --gray-400: #9ca3af;
+        --gray-500: #6b7280;
+        --gray-600: #4b5563;
+        --gray-700: #374151;
+        --gray-800: #1f2937;
+        --gray-900: #111827;
+        
+        --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+        --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+        --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+        
+        --radius-sm: 0.375rem;
+        --radius: 0.5rem;
+        --radius-md: 0.75rem;
+        --radius-lg: 1rem;
+        --radius-xl: 1.5rem;
+        --radius-2xl: 2rem;
+        --radius-full: 9999px;
+        
+        --transition-fast: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+        --transition: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+        --transition-bounce: 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    body {
+        background: linear-gradient(135deg, var(--gray-50) 0%, #ffffff 100%);
+        font-family: 'Inter', sans-serif;
+    }
+
+    .container {
+        max-width: 1280px;
+    }
+
+    /* Page Header */
+    .text-center.mb-5 {
+        animation: fadeInDown 0.8s ease-out;
+    }
+
+    .display-5 {
+        font-size: clamp(2rem, 5vw, 2.5rem);
+        font-weight: 800;
+        color: var(--gray-900);
+        position: relative;
+        display: inline-block;
+        margin-bottom: 1rem;
+    }
+
+    .display-5::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary), var(--secondary));
+        border-radius: var(--radius-full);
+        animation: expandWidth 0.8s ease-out 0.3s both;
+    }
+
+    .display-5 i {
+        color: var(--primary);
+        animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+
+    .lead {
+        color: var(--gray-600) !important;
+        font-size: 1.25rem;
+    }
+
+    /* Cards */
+    .card {
+        border: none !important;
+        border-radius: var(--radius-2xl) !important;
+        overflow: hidden;
+        transition: all var(--transition-bounce);
+        background: white;
+        position: relative;
+    }
+
+    .card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary), var(--secondary));
+        transform: scaleX(0);
+        transition: transform 0.5s ease;
+        transform-origin: left;
+    }
+
+    .card:hover::before {
+        transform: scaleX(1);
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-2xl) !important;
+    }
+
+    /* Shipping Timeline Cards */
+    .col-md-4 .border.rounded {
+        border: 1px solid var(--gray-200) !important;
+        transition: all var(--transition);
+        background: white;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .col-md-4 .border.rounded:hover {
+        border-color: var(--primary) !important;
+        transform: scale(1.05);
+        box-shadow: var(--shadow-xl);
+    }
+
+    .col-md-4 .border.rounded .bg-opacity-10 {
+        transition: all var(--transition);
+    }
+
+    .col-md-4 .border.rounded:hover .bg-opacity-10 {
+        transform: rotate(360deg);
+        background: var(--primary) !important;
+    }
+
+    .col-md-4 .border.rounded:hover .bg-opacity-10 i {
+        color: white !important;
+    }
+
+    .col-md-4 .border.rounded h5 {
+        transition: color var(--transition);
+    }
+
+    .col-md-4 .border.rounded:hover h5 {
+        color: var(--primary);
+    }
+
+    /* Shipping Methods Cards */
+    .col-md-6 .card {
+        animation: slideInLeft 0.6s ease-out;
+        animation-fill-mode: both;
+    }
+
+    .col-md-6:first-child .card {
+        animation-delay: 0.2s;
+    }
+
+    .col-md-6:last-child .card {
+        animation-delay: 0.3s;
+    }
+
+    @keyframes slideInLeft {
+        from {
+            opacity: 0;
+            transform: translateX(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    .list-unstyled li {
+        transition: all var(--transition);
+        padding: 0.5rem;
+        border-radius: var(--radius);
+    }
+
+    .list-unstyled li:hover {
+        background: var(--gray-50);
+        transform: translateX(10px);
+    }
+
+    .list-unstyled li i {
+        transition: transform var(--transition);
+    }
+
+    .list-unstyled li:hover i {
+        transform: scale(1.2);
+    }
+
+    .alert-info {
+        background: linear-gradient(135deg, var(--info-light), #dbeafe);
+        color: var(--info-dark);
+        border: none;
+        border-radius: var(--radius-lg);
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0% { opacity: 1; }
+        50% { opacity: 0.8; }
+        100% { opacity: 1; }
+    }
+
+    /* FAQ Accordion */
+    .accordion-item {
+        border: 1px solid var(--gray-200) !important;
+        border-radius: var(--radius-lg) !important;
+        overflow: hidden;
+        transition: all var(--transition);
+        margin-bottom: 0.5rem;
+    }
+
+    .accordion-item:hover {
+        border-color: var(--primary) !important;
+        box-shadow: var(--shadow);
+    }
+
+    .accordion-button {
+        font-weight: 600;
+        color: var(--gray-800);
+        background: white;
+        transition: all var(--transition);
+        padding: 1.25rem;
+    }
+
+    .accordion-button:not(.collapsed) {
+        background: linear-gradient(135deg, var(--primary-light), #c7d2fe);
+        color: var(--primary-dark);
+        font-weight: 700;
+    }
+
+    .accordion-button:focus {
+        box-shadow: none;
+        border-color: var(--primary);
+    }
+
+    .accordion-button::after {
+        transition: transform var(--transition);
+    }
+
+    .accordion-button:not(.collapsed)::after {
+        transform: rotate(90deg);
+        filter: brightness(0) invert(1);
+    }
+
+    .accordion-body {
+        background: var(--gray-50);
+        color: var(--gray-700);
+        line-height: 1.7;
+        padding: 1.5rem;
+    }
+
+    .accordion-body a {
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .accordion-body a:hover {
+        text-decoration: underline;
+    }
+
+    /* Shipping Partners */
+    .row.align-items-center .col-md-3 {
+        animation: fadeInUp 0.6s ease-out;
+        animation-fill-mode: both;
+    }
+
+    .row.align-items-center .col-md-3:nth-child(1) { animation-delay: 0.1s; }
+    .row.align-items-center .col-md-3:nth-child(2) { animation-delay: 0.2s; }
+    .row.align-items-center .col-md-3:nth-child(3) { animation-delay: 0.3s; }
+    .row.align-items-center .col-md-3:nth-child(4) { animation-delay: 0.4s; }
+
+    .border.rounded.bg-light {
+        background: linear-gradient(135deg, var(--gray-50), var(--gray-100)) !important;
+        border: 1px solid var(--gray-200) !important;
+        transition: all var(--transition);
+        cursor: pointer;
+    }
+
+    .border.rounded.bg-light:hover {
+        transform: translateY(-5px) scale(1.05);
+        box-shadow: var(--shadow-xl);
+        border-color: var(--primary) !important;
+    }
+
+    .border.rounded.bg-light i {
+        transition: all var(--transition);
+    }
+
+    .border.rounded.bg-light:hover i {
+        transform: scale(1.2) rotate(360deg);
+        color: var(--primary) !important;
+    }
+
+    .border.rounded.bg-light h6 {
+        transition: color var(--transition);
+    }
+
+    .border.rounded.bg-light:hover h6 {
+        color: var(--primary);
+    }
+
+    /* Contact Support Card */
+    .card.border-primary {
+        border: 2px solid var(--primary) !important;
+        position: relative;
+        overflow: hidden;
+        animation: fadeInUp 0.8s ease-out 0.5s both;
+    }
+
+    .card.border-primary::after {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(45deg, transparent, rgba(99, 102, 241, 0.1), transparent);
+        transform: rotate(45deg);
+        animation: shimmer 3s infinite;
+    }
+
+    @keyframes shimmer {
+        0% { transform: translateX(-100%) rotate(45deg); }
+        100% { transform: translateX(100%) rotate(45deg); }
+    }
+
+    /* Buttons */
+    .btn {
+        padding: 0.875rem 2rem;
+        border-radius: var(--radius-lg);
+        font-weight: 600;
+        font-size: 1rem;
+        transition: all var(--transition-bounce);
+        border: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        transform: translate(-50%, -50%);
+        transition: width 0.6s, height 0.6s;
+    }
+
+    .btn:hover::before {
+        width: 300px;
+        height: 300px;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-2xl);
+    }
+
+    .btn-outline-primary {
+        background: transparent;
+        color: var(--primary);
+        border: 2px solid var(--primary);
+    }
+
+    .btn-outline-primary:hover {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: white;
+        transform: translateY(-2px);
+        border-color: transparent;
+    }
+
+    .btn i {
+        transition: transform var(--transition);
+    }
+
+    .btn:hover i {
+        transform: translateX(5px) scale(1.2);
+    }
+
+    /* Animations */
+    @keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes expandWidth {
+        from { width: 0; }
+        to { width: 80px; }
+    }
+
+    /* Toast Notification */
+    .toast-notification {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        background: linear-gradient(135deg, var(--success), #059669);
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-2xl);
+        transform: translateX(400px);
+        transition: transform 0.3s ease;
+        z-index: 9999;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .toast-notification.show {
+        transform: translateX(0);
+    }
+
+    .toast-notification i {
+        font-size: 1.25rem;
+        animation: bellShake 0.5s ease;
+    }
+
+    @keyframes bellShake {
+        0%, 100% { transform: rotate(0); }
+        25% { transform: rotate(15deg); }
+        75% { transform: rotate(-15deg); }
+    }
+
+    /* Loading Spinner */
+    .spinner {
+        width: 20px;
+        height: 20px;
+        border: 3px solid rgba(255,255,255,0.3);
+        border-top-color: white;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+
+    /* Tooltip */
+    .tooltip-info {
+        position: relative;
+        display: inline-block;
+        cursor: help;
+    }
+
+    .tooltip-info:hover::after {
+        content: attr(data-tooltip);
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--gray-900);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: var(--radius);
+        font-size: 0.875rem;
+        white-space: nowrap;
+        z-index: 1000;
+        box-shadow: var(--shadow-lg);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .container {
+            padding: 0 1.5rem;
+        }
+
+        .display-5 {
+            font-size: 2rem;
+        }
+
+        .lead {
+            font-size: 1.1rem;
+        }
+
+        .col-md-4 .border.rounded {
+            margin-bottom: 1rem;
+        }
+
+        .btn {
+            width: 100%;
+            margin-bottom: 0.5rem;
+        }
+
+        .btn.me-2 {
+            margin-right: 0 !important;
+        }
+
+        .accordion-button {
+            padding: 1rem;
+            font-size: 0.95rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .display-5 {
+            font-size: 1.75rem;
+        }
+
+        .lead {
+            font-size: 1rem;
+        }
+
+        .card-body {
+            padding: 1.5rem !important;
+        }
+
+        .list-unstyled li {
+            font-size: 0.95rem;
+        }
+
+        .alert-info {
+            font-size: 0.9rem;
+        }
+
+        .row.align-items-center .col-6 {
+            padding: 0.25rem;
+        }
+    }
+
+    /* Dark Mode */
+    @media (prefers-color-scheme: dark) {
+        body {
+            background: linear-gradient(135deg, var(--gray-900), var(--gray-800));
+            color: var(--gray-200);
+        }
+
+        .display-5 {
+            color: white;
+        }
+
+        .lead {
+            color: var(--gray-400) !important;
+        }
+
+        .card {
+            background: var(--gray-800);
+        }
+
+        .col-md-4 .border.rounded {
+            background: var(--gray-800);
+            border-color: var(--gray-700) !important;
+        }
+
+        .col-md-4 .border.rounded h5,
+        .col-md-4 .border.rounded p {
+            color: var(--gray-300);
+        }
+
+        .list-unstyled li {
+            color: var(--gray-300);
+        }
+
+        .list-unstyled li:hover {
+            background: var(--gray-700);
+        }
+
+        .accordion-button {
+            background: var(--gray-800);
+            color: white;
+        }
+
+        .accordion-button:not(.collapsed) {
+            background: linear-gradient(135deg, var(--primary-dark), #3730a3);
+            color: white;
+        }
+
+        .accordion-body {
+            background: var(--gray-700);
+            color: var(--gray-300);
+        }
+
+        .border.rounded.bg-light {
+            background: linear-gradient(135deg, var(--gray-700), var(--gray-800)) !important;
+            border-color: var(--gray-600) !important;
+        }
+
+        .border.rounded.bg-light h6 {
+            color: var(--gray-300);
+        }
+
+        .alert-info {
+            background: linear-gradient(135deg, var(--gray-700), var(--gray-800));
+            color: var(--info-light);
+        }
+
+        .text-muted {
+            color: var(--gray-400) !important;
+        }
+    }
+
+    /* Print Styles */
+    @media print {
+        .btn,
+        .accordion-button::after,
+        .card::before {
+            display: none;
+        }
+
+        .card {
+            box-shadow: none;
+            border: 1px solid #ddd;
+        }
+    }
+</style>
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <!-- Page Header -->
+            <div class="text-center mb-5">
+                <h1 class="display-5 fw-bold mb-3">
+                    <i class="bi bi-truck me-2"></i>
+                    Shipping Information
+                </h1>
+                <p class="lead text-muted">Everything you need to know about our shipping policies and delivery options</p>
+            </div>
+
+            <!-- Shipping Timeline -->
+            <div class="card border-0 shadow-sm mb-5">
+                <div class="card-body p-4">
+                    <h3 class="card-title mb-4">
+                        <i class="bi bi-clock-history me-2 text-primary"></i>
+                        Processing & Delivery Times
+                    </h3>
+                    <div class="row">
+                        <div class="col-md-4 mb-4">
+                            <div class="text-center p-3 border rounded">
+                                <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
+                                    <i class="bi bi-box-seam fs-2 text-primary"></i>
+                                </div>
+                                <h5>Order Processing</h5>
+                                <p class="text-muted mb-0">1-2 business days</p>
+                                <small class="text-muted">Mon-Fri, excluding holidays</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-4">
+                            <div class="text-center p-3 border rounded">
+                                <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
+                                    <i class="bi bi-truck fs-2 text-success"></i>
+                                </div>
+                                <h5>Standard Shipping</h5>
+                                <p class="text-muted mb-0">3-5 business days</p>
+                                <small class="text-muted">Free over 50,000 FCFA</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-4">
+                            <div class="text-center p-3 border rounded">
+                                <div class="bg-warning bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
+                                    <i class="bi bi-rocket-takeoff fs-2 text-warning"></i>
+                                </div>
+                                <h5>Express Shipping</h5>
+                                <p class="text-muted mb-0">1-2 business days</p>
+                                <small class="text-muted">Same-day if ordered before 2PM</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Shipping Methods & Rates -->
+            <div class="row mb-5">
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <h4 class="card-title mb-3">
+                                <i class="bi bi-truck-flatbed me-2 text-success"></i>
+                                Domestic Shipping
+                            </h4>
+                            <ul class="list-unstyled">
+                                <li class="mb-2">
+                                    <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                    <strong>Standard Shipping:</strong> 5,000 FCFA (3-5 business days)
+                                </li>
+                                <li class="mb-2">
+                                    <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                    <strong>Express Shipping:</strong> 12,000 FCFA (1-2 business days)
+                                </li>
+                                <li class="mb-2">
+                                    <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                    <strong>Free shipping</strong> on orders over 50,000 FCFA
+                                </li>
+                                <li>
+                                    <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                    <strong>Same-day delivery</strong> available in select areas
+                                </li>
+                            </ul>
+                            <div class="mt-3 tooltip-info" data-tooltip="Available in Douala, Yaoundé, and Limbe">
+                                <i class="bi bi-info-circle text-primary me-1"></i>
+                                <small>Check same-day delivery eligibility</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <h4 class="card-title mb-3">
+                                <i class="bi bi-globe me-2 text-primary"></i>
+                                International Shipping
+                            </h4>
+                            <ul class="list-unstyled">
+                                <li class="mb-2">
+                                    <i class="bi bi-check-circle-fill text-primary me-2"></i>
+                                    <strong>Standard International:</strong> 19,000 FCFA (7-14 business days)
+                                </li>
+                                <li class="mb-2">
+                                    <i class="bi bi-check-circle-fill text-primary me-2"></i>
+                                    <strong>Express International:</strong> 34,000 FCFA (3-5 business days)
+                                </li>
+                                <li>
+                                    <i class="bi bi-check-circle-fill text-primary me-2"></i>
+                                    <strong>Shipping to 50+ countries</strong> worldwide
+                                </li>
+                            </ul>
+                            <div class="alert alert-info mt-3 mb-0">
+                                <i class="bi bi-info-circle me-2"></i>
+                                <small>Customs duties and taxes may apply for international orders and are the responsibility of the customer.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Shipping FAQs -->
+            <div class="card border-0 shadow-sm mb-5">
+                <div class="card-body p-4">
+                    <h3 class="card-title mb-4">
+                        <i class="bi bi-question-circle me-2 text-primary"></i>
+                        Frequently Asked Questions
+                    </h3>
+                    
+                    <div class="accordion" id="shippingFAQ">
+                        <!-- FAQ 1 -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                    <i class="bi bi-search me-2"></i>
+                                    How can I track my order?
+                                </button>
+                            </h2>
+                            <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#shippingFAQ">
+                                <div class="accordion-body">
+                                    <p>Once your order is shipped, you will receive a tracking number via email. You can track your package in several ways:</p>
+                                    <ul>
+                                        <li>Visit our <a href="#" class="track-link">Track Order</a> page and enter your tracking number</li>
+                                        <li>Click the tracking link in your shipping confirmation email</li>
+                                        <li>Track directly on the carrier's website (DHL, UPS, FedEx, USPS)</li>
+                                    </ul>
+                                    <p class="mb-0">You'll also receive SMS updates if you provided a mobile number at checkout.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- FAQ 2 -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                    <i class="bi bi-house-door me-2"></i>
+                                    What if I'm not home when my package arrives?
+                                </button>
+                            </h2>
+                            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#shippingFAQ">
+                                <div class="accordion-body">
+                                    <p>If you're not home, the carrier will typically:</p>
+                                    <ul>
+                                        <li>Leave a delivery attempt notice with instructions</li>
+                                        <li>Leave the package in a safe place (at driver's discretion for non-signature items)</li>
+                                        <li>Deliver to a neighbor (with your prior authorization)</li>
+                                    </ul>
+                                    <p class="mb-0">For valuable items requiring signature, you can arrange for redelivery or pick up from their local facility. Most carriers will make 3 delivery attempts before returning to sender.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- FAQ 3 -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                                    <i class="bi bi-mailbox2 me-2"></i>
+                                    Do you ship to PO boxes?
+                                </button>
+                            </h2>
+                            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#shippingFAQ">
+                                <div class="accordion-body">
+                                    <p>Yes, we ship to PO boxes via standard shipping (USPS, Royal Mail, La Poste). However, please note:</p>
+                                    <ul>
+                                        <li>Express shipping options (FedEx, UPS, DHL) cannot deliver to PO boxes</li>
+                                        <li>Some international destinations may restrict PO box delivery</li>
+                                        <li>Signature-required items cannot be delivered to PO boxes</li>
+                                    </ul>
+                                    <p class="mb-0">If you select express shipping with a PO box, we'll contact you to arrange alternative delivery.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- FAQ 4 -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                                    <i class="bi bi-pencil-square me-2"></i>
+                                    Can I change my shipping address after placing an order?
+                                </button>
+                            </h2>
+                            <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#shippingFAQ">
+                                <div class="accordion-body">
+                                    <p>You can change your shipping address within <strong>2 hours</strong> of placing your order:</p>
+                                    <ol>
+                                        <li>Log in to your account and go to "My Orders"</li>
+                                        <li>Select the order and click "Edit Shipping Address"</li>
+                                        <li>Contact our customer service immediately at <a href="tel:+237650970291">+237 650-970-291</a></li>
+                                    </ol>
+                                    <p>After the 2-hour window, changes may not be possible as orders begin processing. If your order has already shipped, we cannot redirect it.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- FAQ 5 -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
+                                    <i class="bi bi-clock me-2"></i>
+                                    What are your shipping cut-off times?
+                                </button>
+                            </h2>
+                            <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#shippingFAQ">
+                                <div class="accordion-body">
+                                    <p>Our shipping cut-off times are as follows:</p>
+                                    <table class="table table-sm">
+                                        <tr>
+                                            <td><strong>Standard Shipping:</strong></td>
+                                            <td>Orders before 4 PM ship same day</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Express Shipping:</strong></td>
+                                            <td>Orders before 2 PM ship same day for next-day delivery</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>International:</strong></td>
+                                            <td>Orders before 12 PM ship same day</td>
+                                        </tr>
+                                    </table>
+                                    <p class="mb-0">Orders placed after cut-off or on weekends/holidays are processed the next business day.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Shipping Partners -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <h3 class="card-title mb-4">
+                        <i class="bi bi-shield-check me-2 text-primary"></i>
+                        Our Shipping Partners
+                    </h3>
+                    <p class="text-muted mb-4">We partner with trusted carriers to ensure your packages arrive safely and on time:</p>
+                    <div class="row align-items-center">
+                        <div class="col-md-3 col-6 mb-3">
+                            <div class="text-center p-3 border rounded bg-light">
+                                <i class="bi bi-truck fs-1 text-primary"></i>
+                                <h6 class="mt-2 mb-0">USPS</h6>
+                                <small class="text-muted">United States</small>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6 mb-3">
+                            <div class="text-center p-3 border rounded bg-light">
+                                <i class="bi bi-box-seam fs-1 text-success"></i>
+                                <h6 class="mt-2 mb-0">UPS</h6>
+                                <small class="text-muted">Worldwide</small>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6 mb-3">
+                            <div class="text-center p-3 border rounded bg-light">
+                                <i class="bi bi-airplane fs-1 text-warning"></i>
+                                <h6 class="mt-2 mb-0">FedEx</h6>
+                                <small class="text-muted">International</small>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6 mb-3">
+                            <div class="text-center p-3 border rounded bg-light">
+                                <i class="bi bi-globe fs-1 text-info"></i>
+                                <h6 class="mt-2 mb-0">DHL</h6>
+                                <small class="text-muted">Express</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Support -->
+            <div class="text-center mt-5">
+                <div class="card border-primary">
+                    <div class="card-body py-4">
+                        <h4 class="card-title mb-3">
+                            <i class="bi bi-headset me-2"></i>
+                            Need Help with Shipping?
+                        </h4>
+                        <p class="card-text mb-4">Our customer service team is here to assist you with any shipping questions or concerns.</p>
+                        <div class="d-flex justify-content-center gap-3 flex-wrap">
+                            <a href="#" class="btn btn-primary contact-support">
+                                <i class="bi bi-headset me-1"></i> Contact Support
+                            </a>
+                            <a href="{{ url_for('products') }}" class="btn btn-outline-primary">
+                                <i class="bi bi-cart me-1"></i> Continue Shopping
+                            </a>
+                        </div>
+                        <div class="mt-3">
+                            <small class="text-muted">
+                                <i class="bi bi-clock-history me-1"></i>
+                                Average response time: < 2 hours
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Toast Container -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3"></div>
+
+<script>
+    // Modern JavaScript for Shipping Information Page
+    (function() {
+        'use strict';
+
+        // Toast notification system
+        function showToast(message, type = 'success', icon = 'bi-check-circle-fill') {
+            const toastContainer = document.querySelector('.toast-container');
+            if (!toastContainer) return;
+
+            const colors = {
+                success: 'linear-gradient(135deg, #10b981, #059669)',
+                warning: 'linear-gradient(135deg, #f59e0b, #d97706)',
+                danger: 'linear-gradient(135deg, #ef4444, #dc2626)',
+                info: 'linear-gradient(135deg, #3b82f6, #2563eb)'
+            };
+
+            const toastId = 'toast-' + Date.now();
+            const toastHtml = `
+                <div id="${toastId}" class="toast-notification show" style="background: ${colors[type] || colors.success}">
+                    <i class="bi ${icon}"></i>
+                    <div class="toast-message">${message}</div>
+                </div>
+            `;
+
+            toastContainer.insertAdjacentHTML('beforeend', toastHtml);
+
+            setTimeout(() => {
+                const toast = document.getElementById(toastId);
+                if (toast) {
+                    toast.classList.remove('show');
+                    setTimeout(() => toast.remove(), 300);
+                }
+            }, 3000);
+        }
+
+        // Track order link
+        document.querySelectorAll('.track-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                showToast('Opening tracking page...', 'info', 'bi-truck');
+                setTimeout(() => {
+                } 1000);
+            });
+        });
+
+        // Contact support button
+        document.querySelector('.contact-support')?.addEventListener('click', function(e) {
+            e.preventDefault();
+            showToast('Connecting to support...', 'info', 'bi-headset');
+            setTimeout(() => {
+                window.location.href = "{{ url_for('help_center') }}";
+            }, 1000);
+        });
+
+        // FAQ accordion tracking
+        document.querySelectorAll('.accordion-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const question = this.textContent.trim();
+                showToast(`Opening: ${question}`, 'info', 'bi-question-circle');
+            });
+        });
+
+        // Shipping partner cards click
+        document.querySelectorAll('.border.rounded.bg-light').forEach(card => {
+            card.addEventListener('click', function() {
+                const carrier = this.querySelector('h6')?.textContent;
+                if (carrier) {
+                    showToast(`Learn more about ${carrier} shipping`, 'info', 'bi-box-seam');
+                    // In a real app, open carrier info modal
+                }
+            });
+        });
+
+        // Delivery timeline hover effect
+        document.querySelectorAll('.col-md-4 .border.rounded').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                const time = this.querySelector('h5')?.textContent;
+                console.log(`Viewing: ${time}`);
+            });
+        });
+
+        // Tooltip initialization
+        const tooltipElements = document.querySelectorAll('[data-tooltip]');
+        tooltipElements.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                showToast(el.getAttribute('data-tooltip'), 'info', 'bi-info-circle');
+            });
+        });
+
+        // Copy shipping rates (for fun)
+        document.querySelectorAll('.list-unstyled li').forEach(item => {
+            item.addEventListener('dblclick', function() {
+                const text = this.textContent.trim();
+                navigator.clipboard.writeText(text).then(() => {
+                    showToast('Shipping rate copied!', 'success', 'bi-clipboard-check');
+                });
+            });
+        });
+
+        // Welcome message
+        setTimeout(() => {
+            showToast('🚚 Free shipping on orders over 50,000 FCFA!', 'success', 'bi-truck');
+        }, 1500);
+
+        // Console greeting
+        console.log('🚚 Shipping Information Page - Delivery details & policies');
+
+        // Expose functions globally
+        window.showToast = showToast;
+    })();
+</script>
+{% endblock %}

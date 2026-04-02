@@ -1,0 +1,887 @@
+{% extends "base.html" %}
+
+{% block title %}My Orders - Linux Shop{% endblock %}
+
+{% block content %}
+<style>
+    /* Modern Orders Page Styling */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+    :root {
+        --primary: #6366f1;
+        --primary-dark: #4f46e5;
+        --primary-light: #818cf8;
+        --secondary: #8b5cf6;
+        --success: #10b981;
+        --success-light: #d1fae5;
+        --danger: #ef4444;
+        --danger-light: #fee2e2;
+        --warning: #f59e0b;
+        --warning-light: #fef3c7;
+        --info: #3b82f6;
+        --info-light: #dbeafe;
+        --gray-50: #f9fafb;
+        --gray-100: #f3f4f6;
+        --gray-200: #e5e7eb;
+        --gray-300: #d1d5db;
+        --gray-400: #9ca3af;
+        --gray-500: #6b7280;
+        --gray-600: #4b5563;
+        --gray-700: #374151;
+        --gray-800: #1f2937;
+        --gray-900: #111827;
+        
+        --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+        --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+        --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+        
+        --radius-sm: 0.375rem;
+        --radius: 0.5rem;
+        --radius-md: 0.75rem;
+        --radius-lg: 1rem;
+        --radius-xl: 1.5rem;
+        --radius-2xl: 2rem;
+        --radius-full: 9999px;
+        
+        --transition-fast: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+        --transition: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+        --transition-bounce: 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    /* Page Header */
+    h1 {
+        font-size: clamp(2rem, 4vw, 2.5rem);
+        font-weight: 800;
+        color: var(--gray-900);
+        margin: 2rem 0;
+        position: relative;
+        display: inline-block;
+        animation: slideInDown 0.6s ease-out;
+    }
+
+    h1::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 0;
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary), var(--secondary));
+        border-radius: var(--radius-full);
+        animation: expandWidth 0.8s ease-out 0.3s both;
+    }
+
+    h1 i {
+        color: var(--primary);
+        margin-right: 0.5rem;
+    }
+
+    /* Table Container */
+    .table-responsive {
+        background: white;
+        border-radius: var(--radius-xl);
+        padding: 1.5rem;
+        box-shadow: var(--shadow-xl);
+        animation: fadeInUp 0.8s ease-out;
+        border: 1px solid var(--gray-200);
+        overflow-x: auto;
+        margin-bottom: 2rem;
+    }
+
+    /* Orders Table */
+    .table {
+        margin-bottom: 0;
+        min-width: 800px;
+    }
+
+    .table thead th {
+        background: linear-gradient(135deg, var(--gray-50), var(--gray-100));
+        color: var(--gray-700);
+        font-weight: 700;
+        font-size: 0.95rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        padding: 1.25rem 1rem;
+        border-bottom: 2px solid var(--gray-300);
+        border-top: none;
+    }
+
+    .table tbody tr {
+        transition: all var(--transition);
+        animation: fadeIn 0.5s ease-out;
+        animation-fill-mode: both;
+        position: relative;
+    }
+
+    {% for i in range(1, 21) %}
+    .table tbody tr:nth-child({{ i }}) {
+        animation-delay: {{ 0.05 * i }}s;
+    }
+    {% endfor %}
+
+    .table tbody tr:hover {
+        background: var(--gray-50) !important;
+        transform: scale(1.01);
+        box-shadow: var(--shadow-md);
+        z-index: 10;
+        position: relative;
+    }
+
+    .table tbody td {
+        padding: 1.5rem 1rem;
+        vertical-align: middle;
+        color: var(--gray-700);
+        font-weight: 500;
+        border-bottom: 1px solid var(--gray-200);
+    }
+
+    /* Order Number */
+    .table tbody td:first-child {
+        font-weight: 700;
+        color: var(--primary);
+        font-family: monospace;
+        font-size: 1.1rem;
+    }
+
+    /* Date */
+    .table tbody td:nth-child(2) {
+        color: var(--gray-600);
+        font-size: 0.95rem;
+        white-space: nowrap;
+    }
+
+    /* Total Amount */
+    .table tbody td:nth-child(3) {
+        font-weight: 700;
+        color: var(--success);
+        font-size: 1.1rem;
+        position: relative;
+    }
+
+    .table tbody td:nth-child(3)::before {
+        content: '💰';
+        margin-right: 0.5rem;
+        opacity: 0.7;
+    }
+
+    /* Payment Method */
+    .table tbody td:nth-child(4) {
+        text-transform: capitalize;
+        font-weight: 600;
+    }
+
+    /* Badge Styling */
+    .badge {
+        padding: 0.5rem 1rem;
+        border-radius: var(--radius-full);
+        font-weight: 600;
+        font-size: 0.85rem;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        box-shadow: var(--shadow-sm);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .badge.bg-warning {
+        background: linear-gradient(135deg, var(--warning), #d97706) !important;
+        color: white;
+        animation: pulse 2s infinite;
+    }
+
+    .badge.bg-info {
+        background: linear-gradient(135deg, var(--info), #2563eb) !important;
+        color: white;
+    }
+
+    .badge.bg-primary {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark)) !important;
+        color: white;
+    }
+
+    .badge.bg-success {
+        background: linear-gradient(135deg, var(--success), #059669) !important;
+        color: white;
+    }
+
+    .badge.bg-secondary {
+        background: linear-gradient(135deg, var(--gray-500), var(--gray-600)) !important;
+        color: white;
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+
+    /* Progress Bar */
+    .progress {
+        height: 8px !important;
+        border-radius: var(--radius-full);
+        background: var(--gray-200);
+        overflow: hidden;
+        margin-top: 0.5rem;
+        box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .progress-bar {
+        background: linear-gradient(90deg, var(--primary), var(--secondary));
+        border-radius: var(--radius-full);
+        position: relative;
+        transition: width 1s ease;
+        animation: progressShimmer 2s linear infinite;
+        background-size: 200% 100%;
+    }
+
+    @keyframes progressShimmer {
+        0% { background-position: 0% 0; }
+        100% { background-position: 200% 0; }
+    }
+
+    /* Status specific progress bar colors */
+    .progress-bar[style*="width:25%"] {
+        background: linear-gradient(90deg, var(--warning), #fbbf24);
+    }
+
+    .progress-bar[style*="width:50%"] {
+        background: linear-gradient(90deg, var(--info), #60a5fa);
+    }
+
+    .progress-bar[style*="width:75%"] {
+        background: linear-gradient(90deg, var(--primary), var(--secondary));
+    }
+
+    .progress-bar[style*="width:100%"] {
+        background: linear-gradient(90deg, var(--success), #34d399);
+    }
+
+    /* View Button */
+    .btn-outline-info {
+        background: transparent;
+        color: var(--info);
+        border: 2px solid var(--info);
+        padding: 0.5rem 1.25rem;
+        border-radius: var(--radius-lg);
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: all var(--transition-bounce);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        text-decoration: none;
+        box-shadow: var(--shadow-sm);
+    }
+
+    .btn-outline-info:hover {
+        background: linear-gradient(135deg, var(--info), #2563eb);
+        color: white;
+        transform: translateY(-2px) scale(1.05);
+        box-shadow: var(--shadow-xl);
+        border-color: transparent;
+    }
+
+    .btn-outline-info i {
+        font-size: 1rem;
+        transition: transform var(--transition);
+    }
+
+    .btn-outline-info:hover i {
+        transform: translateX(5px);
+    }
+
+    .btn-sm {
+        padding: 0.4rem 1rem;
+        font-size: 0.85rem;
+    }
+
+    /* No Orders State */
+    .table tbody tr td[colspan="5"] {
+        text-align: center;
+        padding: 4rem 2rem;
+        color: var(--gray-500);
+        font-size: 1.1rem;
+        background: linear-gradient(135deg, var(--gray-50), var(--gray-100));
+        border-radius: var(--radius-lg);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .table tbody tr td[colspan="5"]::before {
+        content: '📦';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 5rem;
+        opacity: 0.1;
+        animation: float 3s ease infinite;
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translate(-50%, -50%) translateY(0); }
+        50% { transform: translate(-50%, -50%) translateY(-20px); }
+    }
+
+    /* Animations */
+    @keyframes slideInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    @keyframes expandWidth {
+        from { width: 0; }
+        to { width: 80px; }
+    }
+
+    /* Toast Notification */
+    .toast-notification {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        background: linear-gradient(135deg, var(--success), #059669);
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-2xl);
+        transform: translateX(400px);
+        transition: transform 0.3s ease;
+        z-index: 9999;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .toast-notification.show {
+        transform: translateX(0);
+    }
+
+    .toast-notification i {
+        font-size: 1.25rem;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .table-responsive {
+            padding: 1rem;
+            border-radius: var(--radius-lg);
+        }
+
+        .table thead th {
+            padding: 1rem 0.75rem;
+            font-size: 0.85rem;
+            white-space: nowrap;
+        }
+
+        .table tbody td {
+            padding: 1rem 0.75rem;
+            font-size: 0.9rem;
+        }
+
+        .badge {
+            padding: 0.35rem 0.75rem;
+            font-size: 0.75rem;
+        }
+
+        .btn-outline-info {
+            padding: 0.35rem 1rem;
+            font-size: 0.8rem;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .table thead th {
+            font-size: 0.75rem;
+        }
+
+        .table tbody td {
+            font-size: 0.85rem;
+        }
+
+        .table tbody td:first-child {
+            font-size: 0.9rem;
+        }
+
+        .badge {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.7rem;
+        }
+
+        .progress {
+            height: 6px !important;
+        }
+    }
+
+    /* Dark Mode */
+    @media (prefers-color-scheme: dark) {
+        .table-responsive {
+            background: var(--gray-800);
+            border-color: var(--gray-700);
+        }
+
+        .table thead th {
+            background: linear-gradient(135deg, var(--gray-700), var(--gray-800));
+            color: var(--gray-300);
+            border-bottom-color: var(--gray-600);
+        }
+
+        .table tbody td {
+            color: var(--gray-300);
+            border-bottom-color: var(--gray-700);
+        }
+
+        .table tbody tr:hover {
+            background: var(--gray-700) !important;
+        }
+
+        .table tbody td:first-child {
+            color: var(--primary-light);
+        }
+
+        .progress {
+            background: var(--gray-700);
+        }
+
+        .table tbody tr td[colspan="5"] {
+            background: linear-gradient(135deg, var(--gray-800), var(--gray-900));
+            color: var(--gray-500);
+        }
+    }
+
+    /* Order Status Timeline */
+    .status-timeline {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+    }
+
+    .status-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--gray-300);
+        transition: all var(--transition);
+    }
+
+    .status-dot.active {
+        background: var(--success);
+        box-shadow: 0 0 10px var(--success);
+        animation: pulse 1s infinite;
+    }
+
+    /* Order Stats */
+    .order-stats {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+    }
+
+    .stat-card {
+        background: white;
+        padding: 1.5rem;
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow);
+        flex: 1;
+        min-width: 150px;
+        text-align: center;
+        transition: all var(--transition);
+        border: 1px solid var(--gray-200);
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-xl);
+        border-color: var(--primary);
+    }
+
+    .stat-icon {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-value {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--primary);
+    }
+
+    .stat-label {
+        color: var(--gray-600);
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+</style>
+
+<!-- Page Header -->
+<h1>
+    <i class="bi bi-box-seam"></i> 
+    My Orders
+    {% if commands %}
+    <span class="badge bg-primary ms-2" style="font-size: 1rem;">{{ commands|length }} orders</span>
+    {% endif %}
+</h1>
+
+<!-- Order Statistics -->
+{% if commands %}
+<div class="order-stats">
+    {% set pending_count = commands|selectattr('status', 'equalto', 'pending')|list|length %}
+    {% set confirmed_count = commands|selectattr('status', 'equalto', 'confirmed')|list|length %}
+    {% set shipped_count = commands|selectattr('status', 'equalto', 'shipped')|list|length %}
+    {% set delivered_count = commands|selectattr('status', 'equalto', 'delivered')|list|length %}
+    
+    <div class="stat-card">
+        <div class="stat-icon">⏳</div>
+        <div class="stat-value">{{ pending_count }}</div>
+        <div class="stat-label">Pending</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon">✓</div>
+        <div class="stat-value">{{ confirmed_count }}</div>
+        <div class="stat-label">Confirmed</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon">🚚</div>
+        <div class="stat-value">{{ shipped_count }}</div>
+        <div class="stat-label">Shipped</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon">✅</div>
+        <div class="stat-value">{{ delivered_count }}</div>
+        <div class="stat-label">Delivered</div>
+    </div>
+</div>
+{% endif %}
+
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th><i class="bi bi-hash"></i> Order #</th>
+                <th><i class="bi bi-calendar"></i> Date</th>
+                <th><i class="bi bi-currency-dollar"></i> Total</th>
+                <th><i class="bi bi-credit-card"></i> Payment</th>
+                <th><i class="bi bi-truck"></i> Status</th>
+                <th><i class="bi bi-eye"></i> Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for command in commands %}
+            <tr data-order-id="{{ command.id }}" data-order-number="{{ command.command_number }}" data-status="{{ command.status }}">
+                <td>
+                    <span class="order-number">#{{ command.command_number }}</span>
+                </td>
+                <td>
+                    <div class="order-date">
+                        <i class="bi bi-calendar-event"></i>
+                        {{ command.created_at.strftime('%Y-%m-%d') }}
+                    </div>
+                    <small class="text-muted">
+                        <i class="bi bi-clock"></i>
+                        {{ command.created_at.strftime('%H:%M') }}
+                    </small>
+                </td>
+                <td class="order-total">{{ command.total_amount|fcfa }} FCFA</td>
+                <td>
+                    <span class="payment-method">
+                        {% if command.payment_method == 'cash' %}
+                            <i class="bi bi-cash"></i> Cash
+                        {% elif command.payment_method == 'card' %}
+                            <i class="bi bi-credit-card"></i> Card
+                        {% elif command.payment_method == 'mobile' %}
+                            <i class="bi bi-phone"></i> Mobile
+                        {% else %}
+                            {{ command.payment_method|default('Cash')|title }}
+                        {% endif %}
+                    </span>
+                </td>
+                <td>
+                    <div class="mb-2">
+                        {% if command.status == 'pending' %}
+                            <span class="badge bg-warning">
+                                <i class="bi bi-hourglass-split"></i> Pending
+                            </span>
+                        {% elif command.status == 'confirmed' %}
+                            <span class="badge bg-info">
+                                <i class="bi bi-check-circle"></i> Confirmed
+                            </span>
+                        {% elif command.status == 'shipped' %}
+                            <span class="badge bg-primary">
+                                <i class="bi bi-truck"></i> Shipped
+                            </span>
+                        {% elif command.status == 'delivered' %}
+                            <span class="badge bg-success">
+                                <i class="bi bi-check-all"></i> Delivered
+                            </span>
+                        {% else %}
+                            <span class="badge bg-secondary">
+                                <i class="bi bi-question-circle"></i> {{ command.status|title }}
+                            </span>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Progress Bar -->
+                    <div class="progress" style="height:8px;">
+                        <div class="progress-bar" role="progressbar" 
+                             style="width:{% if command.status=='pending' %}25%{% elif command.status=='confirmed' %}50%{% elif command.status=='shipped' %}75%{% elif command.status=='delivered' %}100%{% else %}0%{% endif %};" 
+                             aria-valuenow="{% if command.status=='pending' %}25{% elif command.status=='confirmed' %}50{% elif command.status=='shipped' %}75{% elif command.status=='delivered' %}100{% else %}0{% endif %}" 
+                             aria-valuemin="0" 
+                             aria-valuemax="100">
+                        </div>
+                    </div>
+
+                    <!-- Status Timeline Dots -->
+                    <div class="status-timeline mt-2">
+                        <span class="status-dot {% if command.status in ['pending','confirmed','shipped','delivered'] %}active{% endif %}" title="Pending"></span>
+                        <span class="status-dot {% if command.status in ['confirmed','shipped','delivered'] %}active{% endif %}" title="Confirmed"></span>
+                        <span class="status-dot {% if command.status in ['shipped','delivered'] %}active{% endif %}" title="Shipped"></span>
+                        <span class="status-dot {% if command.status == 'delivered' %}active{% endif %}" title="Delivered"></span>
+                    </div>
+                </td>
+                <td>
+                    <a href="{{ url_for('command_confirmation', command_id=command.id) }}" 
+                       class="btn-outline-info btn-sm view-order"
+                       data-order-id="{{ command.id }}">
+                        <i class="bi bi-eye"></i> 
+                        View
+                    </a>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="6">
+                    <div class="empty-orders">
+                        <p>📦 No orders found</p>
+                        <p class="text-muted">Start shopping to see your orders here!</p>
+                        <a href="{{ url_for('products') }}" class="btn btn-primary mt-3">
+                            <i class="bi bi-bag-check"></i> Browse Products
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Toast Container -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3"></div>
+
+<script>
+    // Modern JavaScript for Orders Page
+    (function() {
+        'use strict';
+
+        // Toast notification system
+        function showToast(message, type = 'success', icon = 'bi-check-circle-fill') {
+            const toastContainer = document.querySelector('.toast-container');
+            if (!toastContainer) return;
+
+            const colors = {
+                success: 'linear-gradient(135deg, #10b981, #059669)',
+                warning: 'linear-gradient(135deg, #f59e0b, #d97706)',
+                danger: 'linear-gradient(135deg, #ef4444, #dc2626)',
+                info: 'linear-gradient(135deg, #3b82f6, #2563eb)'
+            };
+
+            const toastId = 'toast-' + Date.now();
+            const toastHtml = `
+                <div id="${toastId}" class="toast-notification show" style="background: ${colors[type] || colors.success}">
+                    <i class="bi ${icon}"></i>
+                    <div class="toast-message">${message}</div>
+                </div>
+            `;
+
+            toastContainer.insertAdjacentHTML('beforeend', toastHtml);
+
+            setTimeout(() => {
+                const toast = document.getElementById(toastId);
+                if (toast) {
+                    toast.classList.remove('show');
+                    setTimeout(() => toast.remove(), 300);
+                }
+            }, 3000);
+        }
+
+        // Animate progress bars on page load
+        document.querySelectorAll('.progress-bar').forEach(bar => {
+            const width = bar.style.width;
+            bar.style.width = '0%';
+            setTimeout(() => {
+                bar.style.width = width;
+            }, 500);
+        });
+
+        // View order button animation
+        document.querySelectorAll('.view-order').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const orderId = this.dataset.orderId;
+                const orderRow = this.closest('tr');
+                const orderNumber = orderRow?.querySelector('.order-number')?.textContent || `#${orderId}`;
+                
+                // Animate button
+                this.style.transform = 'scale(0.95)';
+                this.innerHTML = '<i class="bi bi-hourglass-split"></i> Loading...';
+                
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 200);
+                
+                showToast(`Loading order ${orderNumber}...`, 'info', 'bi-box-seam');
+                
+                setTimeout(() => {
+                    window.location.href = this.href;
+                }, 500);
+            });
+        });
+
+        // Hover effect for order rows
+        document.querySelectorAll('tbody tr').forEach(row => {
+            row.addEventListener('mouseenter', function() {
+                const orderNumber = this.querySelector('.order-number')?.textContent;
+                if (orderNumber) {
+                    // Optional: Show quick preview tooltip
+                }
+            });
+        });
+
+        // Status badge hover effect
+        document.querySelectorAll('.badge').forEach(badge => {
+            badge.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.1)';
+                this.style.transition = 'transform 0.2s ease';
+            });
+            
+            badge.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+            });
+        });
+
+        // Order statistics animation
+        function animateStats() {
+            document.querySelectorAll('.stat-value').forEach(stat => {
+                const value = stat.textContent;
+                stat.textContent = '0';
+                
+                setTimeout(() => {
+                    stat.textContent = value;
+                }, 500);
+            });
+        }
+        animateStats();
+
+        // Filter orders by status (optional enhancement)
+        function filterOrders(status) {
+            document.querySelectorAll('tbody tr[data-status]').forEach(row => {
+                const rowStatus = row.dataset.status;
+                if (status === 'all' || rowStatus === status) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+            
+            showToast(`Showing ${status} orders`, 'info', 'bi-funnel');
+        }
+
+        // Add filter buttons (if you want them)
+        const filterContainer = document.createElement('div');
+        filterContainer.className = 'mb-3 d-flex gap-2 flex-wrap';
+        filterContainer.innerHTML = `
+            <button class="btn btn-outline-primary btn-sm" onclick="filterOrders('all')">All</button>
+            <button class="btn btn-outline-warning btn-sm" onclick="filterOrders('pending')">Pending</button>
+            <button class="btn btn-outline-info btn-sm" onclick="filterOrders('confirmed')">Confirmed</button>
+            <button class="btn btn-outline-primary btn-sm" onclick="filterOrders('shipped')">Shipped</button>
+            <button class="btn btn-outline-success btn-sm" onclick="filterOrders('delivered')">Delivered</button>
+        `;
+        
+        const header = document.querySelector('h1');
+        if (header && document.querySelectorAll('tbody tr[data-status]').length > 0) {
+            header.after(filterContainer);
+        }
+
+        // Track order status updates
+        function checkOrderUpdates() {
+            document.querySelectorAll('[data-status]').forEach(row => {
+                const currentStatus = row.dataset.status;
+                const statusBadge = row.querySelector('.badge');
+                const progressBar = row.querySelector('.progress-bar');
+                
+                // Simulate status update check (replace with actual AJAX call)
+                if (currentStatus === 'shipped') {
+                    // Add tracking animation
+                    statusBadge.style.animation = 'pulse 1s infinite';
+                }
+            });
+        }
+        
+        // Check for updates every 30 seconds
+        setInterval(checkOrderUpdates, 30000);
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Alt + R to refresh orders
+            if (e.altKey && e.key === 'r') {
+                e.preventDefault();
+                showToast('Refreshing orders...', 'info', 'bi-arrow-repeat');
+                setTimeout(() => {
+                    window.location.reload();
+                }, 500);
+            }
+            // Alt + 1-4 to filter by status
+            if (e.altKey && e.key >= '1' && e.key <= '4') {
+                e.preventDefault();
+                const statuses = ['pending', 'confirmed', 'shipped', 'delivered'];
+                const index = parseInt(e.key) - 1;
+                filterOrders(statuses[index]);
+            }
+        });
+
+        // Welcome message
+        const orderCount = document.querySelectorAll('tbody tr[data-status]').length;
+        if (orderCount > 0) {
+            setTimeout(() => {
+                showToast(`📦 You have ${orderCount} order${orderCount > 1 ? 's' : ''}`, 'info', 'bi-box-seam');
+            }, 1000);
+        }
+
+        // Console greeting
+        console.log('📦 Orders page loaded - Tracking your packages!');
+
+        // Expose functions globally
+        window.showToast = showToast;
+        window.filterOrders = filterOrders;
+    })();
+</script>
+{% endblock %}

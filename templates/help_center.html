@@ -1,0 +1,1293 @@
+{% extends "base.html" %}
+
+{% block title %}Help Center - ShopMetuge{% endblock %}
+
+{% block content %}
+<style>
+    /* Modern Help Center Page Styling */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+    :root {
+        --primary: #6366f1;
+        --primary-dark: #4f46e5;
+        --primary-light: #818cf8;
+        --secondary: #8b5cf6;
+        --success: #10b981;
+        --success-dark: #059669;
+        --success-light: #d1fae5;
+        --danger: #ef4444;
+        --danger-light: #fee2e2;
+        --warning: #f59e0b;
+        --warning-dark: #d97706;
+        --warning-light: #fef3c7;
+        --info: #3b82f6;
+        --info-dark: #2563eb;
+        --info-light: #dbeafe;
+        --gray-50: #f9fafb;
+        --gray-100: #f3f4f6;
+        --gray-200: #e5e7eb;
+        --gray-300: #d1d5db;
+        --gray-400: #9ca3af;
+        --gray-500: #6b7280;
+        --gray-600: #4b5563;
+        --gray-700: #374151;
+        --gray-800: #1f2937;
+        --gray-900: #111827;
+        
+        --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+        --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+        --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+        
+        --radius-sm: 0.375rem;
+        --radius: 0.5rem;
+        --radius-md: 0.75rem;
+        --radius-lg: 1rem;
+        --radius-xl: 1.5rem;
+        --radius-2xl: 2rem;
+        --radius-full: 9999px;
+        
+        --transition-fast: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+        --transition: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+        --transition-bounce: 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    body {
+        background: linear-gradient(135deg, var(--gray-50) 0%, #ffffff 100%);
+        font-family: 'Inter', sans-serif;
+        line-height: 1.7;
+    }
+
+    .container {
+        max-width: 1280px;
+    }
+
+    /* Hero Section */
+    .text-center.mb-5 {
+        animation: fadeInDown 0.8s ease-out;
+    }
+
+    .bg-primary.bg-opacity-10 {
+        background: linear-gradient(135deg, var(--primary-light), #c7d2fe) !important;
+        transition: all var(--transition);
+    }
+
+    .bg-primary.bg-opacity-10:hover {
+        transform: rotate(360deg) scale(1.1);
+        transition: transform 0.6s ease;
+    }
+
+    .display-5 {
+        font-size: clamp(2rem, 5vw, 2.5rem);
+        font-weight: 800;
+        color: var(--gray-900);
+        position: relative;
+        display: inline-block;
+        margin-bottom: 1rem;
+    }
+
+    .display-5::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary), var(--secondary));
+        border-radius: var(--radius-full);
+        animation: expandWidth 0.8s ease-out 0.3s both;
+    }
+
+    .display-5 i {
+        color: var(--primary);
+        animation: headsetShake 2s infinite;
+    }
+
+    @keyframes headsetShake {
+        0%, 100% { transform: rotate(0); }
+        10%, 30%, 50%, 70%, 90% { transform: rotate(10deg); }
+        20%, 40%, 60%, 80% { transform: rotate(-10deg); }
+    }
+
+    .lead {
+        color: var(--gray-600) !important;
+        font-size: 1.25rem;
+    }
+
+    /* Search Bar */
+    .input-group {
+        border-radius: var(--radius-2xl);
+        overflow: hidden;
+        box-shadow: var(--shadow-lg);
+        transition: all var(--transition);
+    }
+
+    .input-group:hover {
+        box-shadow: var(--shadow-2xl);
+        transform: scale(1.02);
+    }
+
+    .input-group .form-control {
+        border: 2px solid var(--gray-200);
+        border-left: none;
+        padding: 1rem 1.5rem;
+        font-size: 1.1rem;
+        transition: all var(--transition-fast);
+    }
+
+    .input-group .form-control:focus {
+        border-color: var(--primary);
+        outline: none;
+        box-shadow: none;
+    }
+
+    .input-group .input-group-text {
+        border: 2px solid var(--gray-200);
+        border-right: none;
+        background: white;
+        padding-left: 1.5rem;
+    }
+
+    .input-group .btn-primary {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        font-weight: 600;
+        transition: all var(--transition-bounce);
+    }
+
+    .input-group .btn-primary:hover {
+        background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+        transform: scale(1.05);
+    }
+
+    .input-group .btn-primary i {
+        transition: transform var(--transition);
+    }
+
+    .input-group .btn-primary:hover i {
+        transform: translateX(5px);
+    }
+
+    /* Category Cards */
+    .col-md-4.col-lg-2.mb-3 {
+        animation: fadeInUp 0.6s ease-out;
+        animation-fill-mode: both;
+    }
+
+    {% for i in range(1, 7) %}
+    .col-md-4.col-lg-2.mb-3:nth-child({{ i }}) {
+        animation-delay: {{ 0.1 * i }}s;
+    }
+    {% endfor %}
+
+    .card.hover-lift {
+        transition: all var(--transition-bounce);
+        border: 1px solid transparent !important;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .card.hover-lift::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary), var(--secondary));
+        transform: scaleX(0);
+        transition: transform 0.5s ease;
+        transform-origin: left;
+    }
+
+    .card.hover-lift:hover::before {
+        transform: scaleX(1);
+    }
+
+    .card.hover-lift:hover {
+        transform: translateY(-10px) scale(1.05);
+        border-color: var(--primary) !important;
+        box-shadow: var(--shadow-2xl) !important;
+    }
+
+    .card.hover-lift .bg-opacity-10 {
+        transition: all var(--transition);
+    }
+
+    .card.hover-lift:hover .bg-opacity-10 {
+        transform: rotate(360deg);
+    }
+
+    .card.hover-lift i {
+        transition: all var(--transition);
+    }
+
+    .card.hover-lift:hover i {
+        transform: scale(1.2);
+        color: white !important;
+    }
+
+    .card.hover-lift:hover .bg-opacity-10.bg-primary {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark)) !important;
+    }
+
+    .card.hover-lift:hover .bg-opacity-10.bg-success {
+        background: linear-gradient(135deg, var(--success), var(--success-dark)) !important;
+    }
+
+    .card.hover-lift:hover .bg-opacity-10.bg-warning {
+        background: linear-gradient(135deg, var(--warning), var(--warning-dark)) !important;
+    }
+
+    .card.hover-lift:hover .bg-opacity-10.bg-info {
+        background: linear-gradient(135deg, var(--info), var(--info-dark)) !important;
+    }
+
+    .card.hover-lift:hover .bg-opacity-10.bg-danger {
+        background: linear-gradient(135deg, var(--danger), #dc2626) !important;
+    }
+
+    .card.hover-lift:hover .bg-opacity-10.bg-secondary {
+        background: linear-gradient(135deg, var(--gray-600), var(--gray-700)) !important;
+    }
+
+    .card.hover-lift:hover .text-primary,
+    .card.hover-lift:hover .text-success,
+    .card.hover-lift:hover .text-warning,
+    .card.hover-lift:hover .text-info,
+    .card.hover-lift:hover .text-danger,
+    .card.hover-lift:hover .text-secondary {
+        color: white !important;
+    }
+
+    /* Popular Questions Accordion */
+    .accordion-item {
+        border: 1px solid var(--gray-200) !important;
+        border-radius: var(--radius-lg) !important;
+        overflow: hidden;
+        transition: all var(--transition);
+        margin-bottom: 0.5rem;
+    }
+
+    .accordion-item:hover {
+        border-color: var(--primary) !important;
+        box-shadow: var(--shadow-lg);
+        transform: scale(1.01);
+    }
+
+    .accordion-button {
+        font-weight: 600;
+        color: var(--gray-800);
+        background: white;
+        transition: all var(--transition);
+        padding: 1.25rem;
+    }
+
+    .accordion-button i {
+        transition: transform var(--transition);
+    }
+
+    .accordion-button:hover i {
+        transform: rotate(360deg);
+    }
+
+    .accordion-button:not(.collapsed) {
+        background: linear-gradient(135deg, var(--primary-light), #c7d2fe);
+        color: var(--primary-dark);
+        font-weight: 700;
+    }
+
+    .accordion-button:focus {
+        box-shadow: none;
+        border-color: var(--primary);
+    }
+
+    .accordion-button::after {
+        transition: transform var(--transition);
+    }
+
+    .accordion-button:not(.collapsed)::after {
+        transform: rotate(90deg);
+        filter: brightness(0) invert(1);
+    }
+
+    .accordion-body {
+        background: var(--gray-50);
+        color: var(--gray-700);
+        line-height: 1.7;
+        padding: 1.5rem;
+    }
+
+    /* Helpfulness Buttons */
+    .btn-outline-success,
+    .btn-outline-danger {
+        border-width: 2px;
+        transition: all var(--transition-bounce);
+    }
+
+    .btn-outline-success:hover {
+        background: linear-gradient(135deg, var(--success), var(--success-dark));
+        transform: translateY(-2px) scale(1.05);
+    }
+
+    .btn-outline-danger:hover {
+        background: linear-gradient(135deg, var(--danger), #dc2626);
+        transform: translateY(-2px) scale(1.05);
+    }
+
+    /* Detailed Help Sections */
+    .card {
+        border: none !important;
+        border-radius: var(--radius-2xl) !important;
+        overflow: hidden;
+        transition: all var(--transition);
+        background: white;
+        box-shadow: var(--shadow) !important;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-2xl) !important;
+    }
+
+    .card-header {
+        background: white;
+        border-bottom: 1px solid var(--gray-200);
+    }
+
+    .card-footer {
+        background: white;
+        border-top: 1px solid var(--gray-200);
+    }
+
+    .bg-opacity-10.rounded-circle {
+        transition: all var(--transition);
+    }
+
+    .card:hover .bg-opacity-10.rounded-circle {
+        transform: rotate(360deg) scale(1.1);
+    }
+
+    .btn-outline-primary,
+    .btn-outline-success,
+    .btn-outline-info,
+    .btn-outline-warning {
+        border-width: 2px;
+        transition: all var(--transition-bounce);
+    }
+
+    .btn-outline-primary:hover {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        transform: translateY(-2px) scale(1.05);
+    }
+
+    .btn-outline-success:hover {
+        background: linear-gradient(135deg, var(--success), var(--success-dark));
+        transform: translateY(-2px) scale(1.05);
+    }
+
+    .btn-outline-info:hover {
+        background: linear-gradient(135deg, var(--info), var(--info-dark));
+        transform: translateY(-2px) scale(1.05);
+    }
+
+    .btn-outline-warning:hover {
+        background: linear-gradient(135deg, var(--warning), var(--warning-dark));
+        transform: translateY(-2px) scale(1.05);
+    }
+
+    /* Contact Options Card */
+    .card.border-primary {
+        border: 2px solid var(--primary) !important;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .card.border-primary::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, var(--primary-light) 0%, transparent 70%);
+        opacity: 0;
+        transition: opacity var(--transition);
+        animation: rotate 20s linear infinite;
+    }
+
+    .card.border-primary:hover::before {
+        opacity: 0.1;
+    }
+
+    @keyframes rotate {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+
+    .bg-light {
+        background: linear-gradient(135deg, var(--gray-50), var(--gray-100)) !important;
+        transition: all var(--transition);
+        border: 1px solid var(--gray-200) !important;
+    }
+
+    .bg-light:hover {
+        border-color: var(--primary) !important;
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-lg);
+    }
+
+    .bg-light i {
+        transition: all var(--transition);
+    }
+
+    .bg-light:hover i {
+        transform: scale(1.2);
+    }
+
+    /* Community Cards */
+    .col-md-4.mb-4 .card {
+        animation: fadeInUp 0.6s ease-out;
+        animation-fill-mode: both;
+    }
+
+    .col-md-4.mb-4:nth-child(1) .card { animation-delay: 0.1s; }
+    .col-md-4.mb-4:nth-child(2) .card { animation-delay: 0.2s; }
+    .col-md-4.mb-4:nth-child(3) .card { animation-delay: 0.3s; }
+
+    .col-md-4.mb-4 .card .bg-opacity-10 {
+        transition: all var(--transition);
+    }
+
+    .col-md-4.mb-4 .card:hover .bg-opacity-10 {
+        transform: rotate(360deg) scale(1.1);
+    }
+
+    /* Feedback Section */
+    .bg-light {
+        background: linear-gradient(135deg, var(--gray-100), var(--gray-200)) !important;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .bg-light::before {
+        content: '💬';
+        position: absolute;
+        top: -20px;
+        right: -20px;
+        font-size: 8rem;
+        opacity: 0.05;
+        transform: rotate(15deg);
+        animation: float 6s ease infinite;
+    }
+
+    @keyframes float {
+        0%, 100% { transform: rotate(15deg) translateY(0); }
+        50% { transform: rotate(15deg) translateY(-20px); }
+    }
+
+    .btn-success,
+    .btn-outline-secondary,
+    .btn-outline-primary {
+        padding: 0.75rem 1.5rem;
+        font-weight: 600;
+        transition: all var(--transition-bounce);
+    }
+
+    .btn-success {
+        background: linear-gradient(135deg, var(--success), var(--success-dark));
+        border: none;
+    }
+
+    .btn-success:hover {
+        background: linear-gradient(135deg, var(--success-dark), var(--success));
+        transform: translateY(-2px) scale(1.05);
+        box-shadow: var(--shadow-xl);
+    }
+
+    .btn-outline-secondary:hover {
+        background: linear-gradient(135deg, var(--gray-600), var(--gray-700));
+        color: white;
+        border-color: transparent;
+        transform: translateY(-2px) scale(1.05);
+    }
+
+    .btn-outline-primary:hover {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: white;
+        border-color: transparent;
+        transform: translateY(-2px) scale(1.05);
+    }
+
+    /* Animations */
+    @keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes expandWidth {
+        from { width: 0; }
+        to { width: 80px; }
+    }
+
+    /* Toast Notification */
+    .toast-notification {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        background: linear-gradient(135deg, var(--success), #059669);
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-2xl);
+        transform: translateX(400px);
+        transition: transform 0.3s ease;
+        z-index: 9999;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .toast-notification.show {
+        transform: translateX(0);
+    }
+
+    .toast-notification i {
+        font-size: 1.25rem;
+    }
+
+    /* Loading Spinner */
+    .spinner {
+        width: 20px;
+        height: 20px;
+        border: 3px solid rgba(255,255,255,0.3);
+        border-top-color: white;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .container {
+            padding: 0 1.5rem;
+        }
+
+        .display-5 {
+            font-size: 2rem;
+        }
+
+        .lead {
+            font-size: 1.1rem;
+        }
+
+        .input-group .form-control {
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+        }
+
+        .input-group .btn-primary {
+            padding: 0.75rem 1.5rem;
+        }
+
+        .col-md-4.col-lg-2.mb-3 {
+            width: 50%;
+        }
+
+        .d-flex.justify-content-center.gap-2 {
+            flex-direction: column;
+        }
+
+        .btn {
+            width: 100%;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .display-5 {
+            font-size: 1.75rem;
+        }
+
+        .lead {
+            font-size: 1rem;
+        }
+
+        .col-md-4.col-lg-2.mb-3 {
+            width: 100%;
+        }
+
+        .card-body.p-5 {
+            padding: 1.5rem !important;
+        }
+    }
+
+    /* Dark Mode */
+    @media (prefers-color-scheme: dark) {
+        body {
+            background: linear-gradient(135deg, var(--gray-900), var(--gray-800));
+            color: var(--gray-200);
+        }
+
+        .display-5 {
+            color: white;
+        }
+
+        .lead {
+            color: var(--gray-400) !important;
+        }
+
+        .card {
+            background: var(--gray-800);
+        }
+
+        .card-header,
+        .card-footer {
+            background: var(--gray-800);
+            border-color: var(--gray-700);
+        }
+
+        .accordion-button {
+            background: var(--gray-800);
+            color: white;
+        }
+
+        .accordion-button:not(.collapsed) {
+            background: linear-gradient(135deg, var(--primary-dark), #3730a3);
+            color: white;
+        }
+
+        .accordion-body {
+            background: var(--gray-700);
+            color: var(--gray-300);
+        }
+
+        .bg-light {
+            background: linear-gradient(135deg, var(--gray-700), var(--gray-800)) !important;
+            color: var(--gray-300);
+        }
+
+        .text-muted {
+            color: var(--gray-400) !important;
+        }
+
+        .input-group .form-control,
+        .input-group .input-group-text {
+            background: var(--gray-800);
+            border-color: var(--gray-700);
+            color: white;
+        }
+
+        .input-group .form-control:focus {
+            background: var(--gray-700);
+        }
+
+        .border-primary {
+            border-color: var(--primary-dark) !important;
+        }
+    }
+
+    /* Print Styles */
+    @media print {
+        .btn,
+        .input-group,
+        .toast-notification {
+            display: none;
+        }
+
+        .card {
+            box-shadow: none;
+            border: 1px solid #ddd;
+            break-inside: avoid;
+        }
+    }
+</style>
+
+<div class="container py-5">
+    <!-- Hero Section -->
+    <div class="text-center mb-5">
+        <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex p-4 mb-4">
+            <i class="bi bi-headset fs-1 text-primary"></i>
+        </div>
+        <h1 class="display-5 fw-bold mb-3">How can we help you?</h1>
+        <p class="lead text-muted mb-4">Find answers, guides, and support for all your questions</p>
+        
+        <!-- Search Bar -->
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="input-group input-group-lg shadow-sm" id="searchContainer">
+                    <span class="input-group-text bg-white border-end-0">
+                        <i class="bi bi-search text-muted"></i>
+                    </span>
+                    <input type="text" class="form-control border-start-0" id="searchInput" placeholder="Search for answers (e.g., 'track order', 'returns', 'payment')">
+                    <button class="btn btn-primary" type="button" id="searchBtn">
+                        <i class="bi bi-search me-1"></i> Search
+                    </button>
+                </div>
+                <div class="mt-2 text-start">
+                    <small class="text-muted"><i class="bi bi-lightbulb me-1"></i>Try searching for: "delivery time", "refund policy", "change password"</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Help Categories -->
+    <div class="row mb-5">
+        <div class="col-12 mb-4">
+            <h3 class="mb-4"><i class="bi bi-grid-3x3-gap me-2 text-primary"></i>Browse by Category</h3>
+        </div>
+        
+        {% set categories = [
+            ('Orders & Shipping', 'bi-cart-check', 'primary', 'Track orders, shipping info, delivery'),
+            ('Returns & Refunds', 'bi-arrow-return-left', 'success', 'Return process, refunds, exchanges'),
+            ('Payments & Billing', 'bi-credit-card', 'warning', 'Payment methods, billing issues'),
+            ('Account & Security', 'bi-person-shield', 'info', 'Login, password, account settings'),
+            ('Products & Quality', 'bi-box-seam', 'danger', 'Product info, quality, warranties'),
+            ('Website Help', 'bi-globe', 'secondary', 'Technical issues, browsing help')
+        ] %}
+        
+        {% for title, icon, color, description in categories %}
+        <div class="col-md-4 col-lg-2 mb-3">
+            <a href="#{{ title|lower|replace('&', '')|replace(' ', '-') }}" class="text-decoration-none category-link" data-category="{{ title }}">
+                <div class="card border-0 shadow-sm h-100 text-center hover-lift">
+                    <div class="card-body p-4">
+                        <div class="bg-{{ color }} bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
+                            <i class="bi {{ icon }} fs-3 text-{{ color }}"></i>
+                        </div>
+                        <h6 class="card-title mb-2">{{ title }}</h6>
+                        <small class="text-muted">{{ description }}</small>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Popular Questions -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3><i class="bi bi-star me-2 text-warning"></i>Popular Questions</h3>
+                <a href="#" class="btn btn-outline-primary btn-sm" id="viewAllQuestions">
+                    <i class="bi bi-arrow-right me-1"></i>View All Questions
+                </a>
+            </div>
+            
+            <div class="accordion" id="popularQuestions">
+                {% set popular_questions = [
+                    ('How can I track my order?', 'Once your order is shipped, you will receive a tracking number via email. You can also check your order status in "My Orders" section of your account.', 'tracking'),
+                    ('What is your return policy?', 'We offer a 30-day return policy for most items. Items must be unused, in original packaging with tags attached. Some items may be excluded (see full policy for details).', 'returns'),
+                    ('How long does shipping take?', 'Standard shipping takes 3-5 business days. Express shipping delivers in 1-2 business days. International shipping typically takes 7-14 business days.', 'shipping-time'),
+                    ('Can I change or cancel my order?', 'You can change or cancel your order within 2 hours of placement. After that, orders begin processing and cannot be modified. Contact support immediately if needed.', 'order-change'),
+                    ('What payment methods do you accept?', 'We accept Visa, MasterCard, American Express, PayPal, Apple Pay, and Google Pay. All payments are processed securely.', 'payments'),
+                    ('How do I reset my password?', 'Click "Forgot Password" on the login page. Enter your email address and follow the instructions sent to your inbox.', 'password-reset')
+                ] %}
+                
+                {% for question, answer, id in popular_questions %}
+                <div class="accordion-item border-0 shadow-sm mb-2">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#question{{ loop.index }}">
+                            <i class="bi bi-question-circle me-2 text-primary"></i>
+                            {{ question }}
+                        </button>
+                    </h2>
+                    <div id="question{{ loop.index }}" class="accordion-collapse collapse" data-bs-parent="#popularQuestions">
+                        <div class="accordion-body">
+                            {{ answer }}
+                            <div class="mt-3 d-flex align-items-center">
+                                <small class="text-muted me-3">
+                                    <i class="bi bi-hand-thumbs-up me-1"></i> Was this helpful?
+                                </small>
+                                <button class="btn btn-sm btn-outline-success me-1 helpful-yes" data-question="{{ question }}">
+                                    <i class="bi bi-hand-thumbs-up me-1"></i> Yes
+                                </button>
+                                <button class="btn btn-sm btn-outline-danger helpful-no" data-question="{{ question }}">
+                                    <i class="bi bi-hand-thumbs-down me-1"></i> No
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Detailed Help Sections -->
+    <div class="row">
+        {% set help_sections = [
+            ('orders-shipping', 'Orders & Shipping', 'primary', [
+                ('How do I place an order?', 'Browse products, add to cart, proceed to checkout, enter shipping details, and complete payment.'),
+                ('How can I track my order?', 'Use the tracking number from your confirmation email or check "My Orders" in your account.'),
+                ('What are the shipping costs?', 'Free shipping on orders over $50. Standard: $5.99, Express: $12.99. International rates vary.'),
+                ('Do you ship internationally?', 'Yes, we ship to 50+ countries. International shipping takes 7-14 business days.'),
+                ('What if my package is lost or damaged?', 'Contact us immediately. We\'ll investigate with the carrier and arrange a replacement or refund.')
+            ]),
+            ('returns-refunds', 'Returns & Refunds', 'success', [
+                ('What is your return policy?', '30-day return window for most items. Items must be unused with original packaging.'),
+                ('How do I start a return?', 'Go to "My Orders", select the item, choose return reason, and print the return label.'),
+                ('How long do refunds take?', 'Refunds are processed within 5-7 business days after we receive the returned item.'),
+                ('Who pays for return shipping?', 'We provide free return labels for defective or incorrect items. Otherwise, customer pays.'),
+                ('Can I exchange an item?', 'Yes! Select "Exchange" instead of "Return" when initiating the return process.')
+            ]),
+            ('payments-billing', 'Payments & Billing', 'warning', [
+                ('What payment methods are accepted?', 'Credit cards, PayPal, Apple Pay, Google Pay, and ShopMetuge gift cards.'),
+                ('Is my payment information secure?', 'Yes! We use SSL encryption and never store complete credit card information.'),
+                ('Why was my payment declined?', 'Common reasons: insufficient funds, incorrect card details, or security blocks by your bank.'),
+                ('Can I use multiple payment methods?', 'Currently, only one payment method per order is supported.'),
+                ('When will I be charged?', 'You\'re charged when your order is placed. For pre-orders, charged when shipped.')
+            ]),
+            ('account-security', 'Account & Security', 'info', [
+                ('How do I create an account?', 'Click "Register" in the top right corner and follow the simple registration process.'),
+                ('I forgot my password. How do I reset it?', 'Use the "Forgot Password" link on the login page to reset via email.'),
+                ('How do I update my account information?', 'Log in, go to "My Account" → "Profile" to update your details.'),
+                ('Is my personal information safe?', 'We use industry-standard security measures to protect your data. Read our Privacy Policy.'),
+                ('Can I delete my account?', 'Yes, contact our support team to request account deletion. This action cannot be undone.')
+            ])
+        ] %}
+        
+        {% for section_id, title, color, questions in help_sections %}
+        <div id="{{ section_id }}" class="col-lg-6 mb-5">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-white border-0 pt-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-{{ color }} bg-opacity-10 rounded-circle d-inline-flex p-2 me-3">
+                            <i class="bi bi-{{ 'cart-check' if section_id == 'orders-shipping' else 'arrow-return-left' if section_id == 'returns-refunds' else 'credit-card' if section_id == 'payments-billing' else 'person-shield' }} text-{{ color }}"></i>
+                        </div>
+                        <h4 class="mb-0">{{ title }}</h4>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="accordion accordion-flush" id="accordion{{ section_id }}">
+                        {% for q, a in questions %}
+                        <div class="accordion-item border-bottom">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed py-3" type="button" data-bs-toggle="collapse" data-bs-target="#{{ section_id }}{{ loop.index }}">
+                                    {{ q }}
+                                </button>
+                            </h2>
+                            <div id="{{ section_id }}{{ loop.index }}" class="accordion-collapse collapse" data-bs-parent="#accordion{{ section_id }}">
+                                <div class="accordion-body py-3">
+                                    {{ a }}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="card-footer bg-white border-0 text-center pt-0">
+                    <a href="#" class="btn btn-outline-{{ color }} view-more" data-section="{{ title }}">
+                        <i class="bi bi-arrow-right me-1"></i>View More {{ title }} Questions
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Contact Options -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="card border-primary shadow-lg">
+                <div class="card-body p-5">
+                    <div class="row align-items-center">
+                        <div class="col-lg-8">
+                            <h2 class="card-title mb-3"><i class="bi bi-chat-dots me-2 text-primary"></i>Still Need Help?</h2>
+                            <p class="card-text mb-4">Our support team is available to assist you with any questions or concerns.</p>
+                            
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <div class="d-flex align-items-center contact-item" data-contact="email">
+                                        <div class="bg-primary bg-opacity-10 rounded-circle p-2 me-3">
+                                            <i class="bi bi-envelope fs-4 text-primary"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-0">Email Support</h6>
+                                            <small class="text-muted">support@shopmetuge.com</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="d-flex align-items-center contact-item" data-contact="phone">
+                                        <div class="bg-success bg-opacity-10 rounded-circle p-2 me-3">
+                                            <i class="bi bi-telephone fs-4 text-success"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-0">Phone Support</h6>
+                                            <small class="text-muted">+1 (555) 123-HELP</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="d-flex align-items-center contact-item" data-contact="whatsapp">
+                                        <div class="bg-warning bg-opacity-10 rounded-circle p-2 me-3">
+                                            <i class="bi bi-whatsapp fs-4 text-warning"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-0">WhatsApp</h6>
+                                            <small class="text-muted">Chat with us live</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 mt-4 mt-lg-0">
+                            <div class="text-center">
+                                <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex p-4 mb-3">
+                                    <i class="bi bi-headset fs-1 text-primary"></i>
+                                </div>
+                                <h5>Live Chat Support</h5>
+                                <p class="text-muted small">Available 9AM-6PM (Mon-Fri)</p>
+                                <button class="btn btn-primary btn-lg" id="liveChatBtn">
+                                    <i class="bi bi-chat-left-text me-2"></i>Start Live Chat
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mt-5">
+                        <div class="col-md-4">
+                            <div class="card border-0 bg-light">
+                                <div class="card-body text-center">
+                                    <i class="bi bi-clock-history fs-1 text-primary mb-3"></i>
+                                    <h6>Response Time</h6>
+                                    <p class="small mb-0">Email: Within 24 hours<br>Phone: Immediate</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card border-0 bg-light">
+                                <div class="card-body text-center">
+                                    <i class="bi bi-translate fs-1 text-success mb-3"></i>
+                                    <h6>Multilingual Support</h6>
+                                    <p class="small mb-0">Available in English, Spanish, and French</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card border-0 bg-light">
+                                <div class="card-body text-center">
+                                    <i class="bi bi-award fs-1 text-warning mb-3"></i>
+                                    <h6>Customer Satisfaction</h6>
+                                    <p class="small mb-0">98% of issues resolved on first contact</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Community & Resources -->
+    <div class="row mt-5">
+        <div class="col-12 mb-4">
+            <h3 class="mb-4"><i class="bi bi-people me-2 text-primary"></i>Community & Resources</h3>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body p-4">
+                    <div class="bg-info bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
+                        <i class="bi bi-book fs-3 text-info"></i>
+                    </div>
+                    <h5 class="card-title">User Guides</h5>
+                    <p class="card-text text-muted">Step-by-step tutorials and product guides</p>
+                    <a href="#" class="btn btn-outline-info resource-btn" data-resource="guides">
+                        <i class="bi bi-arrow-right me-1"></i>Browse Guides
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body p-4">
+                    <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
+                        <i class="bi bi-camera-video fs-3 text-success"></i>
+                    </div>
+                    <h5 class="card-title">Video Tutorials</h5>
+                    <p class="card-text text-muted">Watch how-to videos and product demos</p>
+                    <a href="#" class="btn btn-outline-success resource-btn" data-resource="videos">
+                        <i class="bi bi-arrow-right me-1"></i>Watch Videos
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body p-4">
+                    <div class="bg-warning bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
+                        <i class="bi bi-chat-square-text fs-3 text-warning"></i>
+                    </div>
+                    <h5 class="card-title">Community Forum</h5>
+                    <p class="card-text text-muted">Connect with other ShopMetuge users</p>
+                    <a href="#" class="btn btn-outline-warning resource-btn" data-resource="forum">
+                        <i class="bi bi-arrow-right me-1"></i>Join Discussion
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Feedback Section -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="card border-0 bg-light">
+                <div class="card-body p-5 text-center">
+                    <h3 class="mb-3"><i class="bi bi-chat-square-heart me-2 text-danger"></i>Help Us Improve</h3>
+                    <p class="text-muted mb-4">Was this Help Center useful? Let us know how we can make it better.</p>
+                    <div class="d-flex justify-content-center gap-2 flex-wrap">
+                        <button class="btn btn-success feedback-btn" data-feedback="helpful">
+                            <i class="bi bi-hand-thumbs-up me-2"></i>Yes, it was helpful
+                        </button>
+                        <button class="btn btn-outline-secondary feedback-btn" data-feedback="needs-improvement">
+                            <i class="bi bi-hand-thumbs-down me-2"></i>Needs improvement
+                        </button>
+                        <button class="btn btn-outline-primary feedback-btn" data-feedback="suggest-edit">
+                            <i class="bi bi-pencil-square me-2"></i>Suggest edit
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Toast Container -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3"></div>
+
+<script>
+    // Modern JavaScript for Help Center Page
+    (function() {
+        'use strict';
+
+        // Toast notification system
+        function showToast(message, type = 'success', icon = 'bi-check-circle-fill') {
+            const toastContainer = document.querySelector('.toast-container');
+            if (!toastContainer) return;
+
+            const colors = {
+                success: 'linear-gradient(135deg, #10b981, #059669)',
+                warning: 'linear-gradient(135deg, #f59e0b, #d97706)',
+                danger: 'linear-gradient(135deg, #ef4444, #dc2626)',
+                info: 'linear-gradient(135deg, #3b82f6, #2563eb)'
+            };
+
+            const toastId = 'toast-' + Date.now();
+            const toastHtml = `
+                <div id="${toastId}" class="toast-notification show" style="background: ${colors[type] || colors.success}">
+                    <i class="bi ${icon}"></i>
+                    <div class="toast-message">${message}</div>
+                </div>
+            `;
+
+            toastContainer.insertAdjacentHTML('beforeend', toastHtml);
+
+            setTimeout(() => {
+                const toast = document.getElementById(toastId);
+                if (toast) {
+                    toast.classList.remove('show');
+                    setTimeout(() => toast.remove(), 300);
+                }
+            }, 3000);
+        }
+
+        // Search functionality
+        const searchInput = document.getElementById('searchInput');
+        const searchBtn = document.getElementById('searchBtn');
+
+        function performSearch() {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            if (searchTerm.length === 0) {
+                showToast('Please enter a search term', 'warning', 'bi-exclamation-triangle');
+                return;
+            }
+
+            showToast(`Searching for: "${searchTerm}"`, 'info', 'bi-search');
+            
+            // Highlight matching content (simplified demo)
+            document.querySelectorAll('.accordion-button').forEach(button => {
+                const text = button.textContent.toLowerCase();
+                if (text.includes(searchTerm)) {
+                    button.style.backgroundColor = 'var(--warning-light)';
+                    button.style.transition = 'background-color 0.3s';
+                    setTimeout(() => {
+                        button.style.backgroundColor = '';
+                    }, 3000);
+                }
+            });
+        }
+
+        searchBtn.addEventListener('click', performSearch);
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') performSearch();
+        });
+
+        // Category links
+        document.querySelectorAll('.category-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const category = this.dataset.category;
+                showToast(`Browsing: ${category}`, 'info', 'bi-folder');
+                
+                const targetId = this.getAttribute('href');
+                const target = document.querySelector(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Helpful buttons
+        document.querySelectorAll('.helpful-yes').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const question = this.dataset.question;
+                showToast(`Thanks for your feedback on: "${question}"`, 'success', 'bi-hand-thumbs-up');
+                this.innerHTML = '<i class="bi bi-check-lg me-1"></i> Thanks!';
+                this.disabled = true;
+            });
+        });
+
+        document.querySelectorAll('.helpful-no').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const question = this.dataset.question;
+                showToast(`We'll work on improving: "${question}"`, 'info', 'bi-hand-thumbs-down');
+                this.innerHTML = '<i class="bi bi-check-lg me-1"></i> Noted';
+                this.disabled = true;
+            });
+        });
+
+        // View more buttons
+        document.querySelectorAll('.view-more').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const section = this.dataset.section;
+                showToast(`Loading more ${section} questions...`, 'info', 'bi-arrow-right');
+            });
+        });
+
+        // Contact items
+        document.querySelectorAll('.contact-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const contactType = this.dataset.contact;
+                const contactInfo = this.querySelector('small').textContent;
+                
+                const messages = {
+                    email: '📧 Opening email client...',
+                    phone: '📞 Opening phone app...',
+                    whatsapp: '💬 Opening WhatsApp...'
+                };
+                
+                showToast(messages[contactType] || 'Contacting support...', 'info', `bi-${contactType}`);
+                
+                if (contactType === 'email') {
+                    window.location.href = `mailto:${contactInfo}`;
+                } else if (contactType === 'phone') {
+                    window.location.href = `tel:${contactInfo.replace(/[^0-9+]/g, '')}`;
+                }
+            });
+        });
+
+        // Live chat button
+        document.getElementById('liveChatBtn')?.addEventListener('click', function() {
+            showToast('Connecting to live chat...', 'info', 'bi-chat-dots');
+            this.innerHTML = '<div class="spinner me-2"></div> Connecting...';
+            this.disabled = true;
+            
+            setTimeout(() => {
+                this.innerHTML = '<i class="bi bi-chat-left-text me-2"></i>Start Live Chat';
+                this.disabled = false;
+                showToast('Chat support is offline. Please try during business hours.', 'warning', 'bi-clock-history');
+            }, 3000);
+        });
+
+        // Resource buttons
+        document.querySelectorAll('.resource-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const resource = this.dataset.resource;
+                const messages = {
+                    guides: '📚 Opening user guides...',
+                    videos: '🎥 Loading video tutorials...',
+                    forum: '💬 Connecting to community forum...'
+                };
+                showToast(messages[resource] || 'Loading resource...', 'info', 'bi-box-arrow-up-right');
+            });
+        });
+
+        // Feedback buttons
+        document.querySelectorAll('.feedback-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const feedback = this.dataset.feedback;
+                const messages = {
+                    'helpful': 'Thanks for your positive feedback! 🌟',
+                    'needs-improvement': 'We appreciate your honesty. We\'ll work on improving!',
+                    'suggest-edit': 'Thanks for helping us improve! Please share your suggestions.'
+                };
+                
+                showToast(messages[feedback], 'success', 'bi-chat-square-heart');
+                
+                if (feedback === 'suggest-edit') {
+                    const email = prompt('Please enter your email address to receive updates:');
+                    if (email) {
+                        showToast(`Thanks! We'll contact you at ${email}`, 'success', 'bi-envelope');
+                    }
+                }
+            });
+        });
+
+        // View all questions
+        document.getElementById('viewAllQuestions')?.addEventListener('click', function(e) {
+            e.preventDefault();
+            showToast('Loading all questions...', 'info', 'bi-list-ul');
+        });
+
+        // Smooth scroll for back to top (if exists)
+        const backToTop = document.getElementById('backToTop');
+        if (backToTop) {
+            backToTop.addEventListener('click', function(e) {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+
+        // Welcome message
+        setTimeout(() => {
+            showToast('👋 Welcome to Help Center! How can we assist you today?', 'info', 'bi-headset');
+        }, 1500);
+
+        // Console greeting
+        console.log('📚 Help Center Page - Customer support & resources');
+
+        // Expose functions globally
+        window.showToast = showToast;
+    })();
+</script>
+{% endblock %}

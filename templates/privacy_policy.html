@@ -1,0 +1,1246 @@
+{% extends "base.html" %}
+
+{% block title %}Privacy Policy - ShopMetuge{% endblock %}
+
+{% block content %}
+<style>
+    /* Modern Privacy Policy Page Styling */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+    :root {
+        --primary: #6366f1;
+        --primary-dark: #4f46e5;
+        --primary-light: #818cf8;
+        --secondary: #8b5cf6;
+        --success: #10b981;
+        --success-dark: #059669;
+        --success-light: #d1fae5;
+        --danger: #ef4444;
+        --danger-light: #fee2e2;
+        --warning: #f59e0b;
+        --warning-dark: #d97706;
+        --warning-light: #fef3c7;
+        --info: #3b82f6;
+        --info-dark: #2563eb;
+        --info-light: #dbeafe;
+        --gray-50: #f9fafb;
+        --gray-100: #f3f4f6;
+        --gray-200: #e5e7eb;
+        --gray-300: #d1d5db;
+        --gray-400: #9ca3af;
+        --gray-500: #6b7280;
+        --gray-600: #4b5563;
+        --gray-700: #374151;
+        --gray-800: #1f2937;
+        --gray-900: #111827;
+        
+        --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+        --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+        --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+        
+        --radius-sm: 0.375rem;
+        --radius: 0.5rem;
+        --radius-md: 0.75rem;
+        --radius-lg: 1rem;
+        --radius-xl: 1.5rem;
+        --radius-2xl: 2rem;
+        --radius-full: 9999px;
+        
+        --transition-fast: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+        --transition: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+        --transition-bounce: 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    body {
+        background: linear-gradient(135deg, var(--gray-50) 0%, #ffffff 100%);
+        font-family: 'Inter', sans-serif;
+        line-height: 1.7;
+    }
+
+    .container {
+        max-width: 1280px;
+    }
+
+    /* Page Header */
+    .text-center.mb-5 {
+        animation: fadeInDown 0.8s ease-out;
+    }
+
+    .display-5 {
+        font-size: clamp(2rem, 5vw, 2.5rem);
+        font-weight: 800;
+        color: var(--gray-900);
+        position: relative;
+        display: inline-block;
+        margin-bottom: 1rem;
+    }
+
+    .display-5::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary), var(--secondary));
+        border-radius: var(--radius-full);
+        animation: expandWidth 0.8s ease-out 0.3s both;
+    }
+
+    .display-5 i {
+        color: var(--primary);
+        animation: shieldPulse 2s infinite;
+    }
+
+    @keyframes shieldPulse {
+        0%, 100% { transform: scale(1); filter: drop-shadow(0 0 0 var(--primary)); }
+        50% { transform: scale(1.1); filter: drop-shadow(0 0 8px var(--primary)); }
+    }
+
+    .lead {
+        color: var(--gray-600) !important;
+        font-size: 1.25rem;
+    }
+
+    .alert-info {
+        background: linear-gradient(135deg, var(--info-light), #dbeafe);
+        color: var(--info-dark);
+        border: none;
+        border-radius: var(--radius-lg);
+        padding: 1rem 2rem;
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0% { opacity: 1; }
+        50% { opacity: 0.9; }
+        100% { opacity: 1; }
+    }
+
+    /* Quick Navigation Cards */
+    .border.rounded.p-2.text-center {
+        transition: all var(--transition-bounce);
+        border: 1px solid var(--gray-200) !important;
+        background: white;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .border.rounded.p-2.text-center::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary), var(--secondary));
+        transform: scaleX(0);
+        transition: transform 0.5s ease;
+        transform-origin: left;
+    }
+
+    .border.rounded.p-2.text-center:hover::before {
+        transform: scaleX(1);
+    }
+
+    .border.rounded.p-2.text-center:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-xl) !important;
+        border-color: transparent !important;
+    }
+
+    .border.rounded.p-2.text-center i {
+        transition: transform var(--transition);
+    }
+
+    .border.rounded.p-2.text-center:hover i {
+        transform: scale(1.2) rotate(360deg);
+    }
+
+    .border.rounded.p-2.text-center small {
+        transition: color var(--transition);
+    }
+
+    .border.rounded.p-2.text-center:hover small {
+        color: var(--primary) !important;
+    }
+
+    /* Main Cards */
+    .card {
+        border: none !important;
+        border-radius: var(--radius-2xl) !important;
+        overflow: hidden;
+        transition: all var(--transition);
+        background: white;
+        box-shadow: var(--shadow) !important;
+        animation: fadeInUp 0.8s ease-out;
+        animation-fill-mode: both;
+    }
+
+    .card:nth-child(1) { animation-delay: 0.1s; }
+    .card:nth-child(2) { animation-delay: 0.2s; }
+    .card:nth-child(3) { animation-delay: 0.3s; }
+    .card:nth-child(4) { animation-delay: 0.4s; }
+    .card:nth-child(5) { animation-delay: 0.5s; }
+    .card:nth-child(6) { animation-delay: 0.6s; }
+    .card:nth-child(7) { animation-delay: 0.7s; }
+    .card:nth-child(8) { animation-delay: 0.8s; }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-2xl) !important;
+    }
+
+    .card-title {
+        color: var(--gray-800);
+        font-weight: 700;
+        position: relative;
+        padding-bottom: 0.75rem;
+    }
+
+    .card-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(90deg, var(--primary), var(--secondary));
+        border-radius: var(--radius-full);
+    }
+
+    /* List Items */
+    .list-unstyled li {
+        transition: all var(--transition);
+        padding: 0.5rem;
+        border-radius: var(--radius);
+    }
+
+    .list-unstyled li:hover {
+        background: var(--gray-50);
+        transform: translateX(10px);
+    }
+
+    .list-unstyled li i {
+        transition: transform var(--transition);
+    }
+
+    .list-unstyled li:hover i {
+        transform: scale(1.2);
+    }
+
+    /* Information Cards */
+    .border.rounded.p-3 {
+        border: 1px solid var(--gray-200) !important;
+        transition: all var(--transition);
+        background: white;
+    }
+
+    .border.rounded.p-3:hover {
+        border-color: var(--primary) !important;
+        transform: scale(1.02);
+        box-shadow: var(--shadow-lg);
+    }
+
+    .border.rounded.p-3 i {
+        transition: all var(--transition);
+    }
+
+    .border.rounded.p-3:hover i {
+        transform: scale(1.2);
+        color: var(--primary) !important;
+    }
+
+    /* Table Styling */
+    .table {
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        box-shadow: var(--shadow);
+    }
+
+    .table thead th {
+        background: linear-gradient(135deg, var(--gray-100), var(--gray-200));
+        color: var(--gray-700);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-size: 0.9rem;
+        border-bottom: 2px solid var(--gray-300);
+    }
+
+    .table tbody tr {
+        transition: all var(--transition);
+    }
+
+    .table tbody tr:hover {
+        background: var(--gray-50) !important;
+    }
+
+    .badge {
+        padding: 0.35rem 0.75rem;
+        border-radius: var(--radius-full);
+        font-weight: 600;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .badge.bg-primary {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark)) !important;
+    }
+
+    .badge.bg-success {
+        background: linear-gradient(135deg, var(--success), var(--success-dark)) !important;
+    }
+
+    .badge.bg-warning {
+        background: linear-gradient(135deg, var(--warning), var(--warning-dark)) !important;
+        color: white;
+    }
+
+    .badge.bg-danger {
+        background: linear-gradient(135deg, var(--danger), #dc2626) !important;
+    }
+
+    /* Border Left Sections */
+    .border-start {
+        border-left-width: 4px !important;
+        transition: all var(--transition);
+    }
+
+    .border-start:hover {
+        transform: translateX(10px);
+    }
+
+    .border-start.border-primary:hover {
+        border-left-color: var(--primary-dark) !important;
+    }
+
+    .border-start.border-success:hover {
+        border-left-color: var(--success-dark) !important;
+    }
+
+    .border-start.border-info:hover {
+        border-left-color: var(--info-dark) !important;
+    }
+
+    /* Data Security Cards */
+    .col-md-3.col-6 .border.rounded.p-3 {
+        transition: all var(--transition-bounce);
+    }
+
+    .col-md-3.col-6 .border.rounded.p-3:hover {
+        transform: translateY(-10px) scale(1.05);
+        box-shadow: var(--shadow-xl);
+    }
+
+    .col-md-3.col-6 .border.rounded.p-3 i {
+        transition: all var(--transition);
+    }
+
+    .col-md-3.col-6 .border.rounded.p-3:hover i {
+        animation: iconShake 0.5s ease;
+    }
+
+    @keyframes iconShake {
+        0%, 100% { transform: rotate(0); }
+        25% { transform: rotate(-15deg); }
+        75% { transform: rotate(15deg); }
+    }
+
+    /* Rights Cards */
+    .col-md-6.mb-3 .border.rounded.p-3 {
+        transition: all var(--transition);
+    }
+
+    .col-md-6.mb-3 .border.rounded.p-3:hover {
+        transform: translateX(10px);
+        border-color: var(--primary) !important;
+    }
+
+    .bg-opacity-10.rounded-circle {
+        transition: all var(--transition);
+    }
+
+    .col-md-6.mb-3 .border.rounded.p-3:hover .bg-opacity-10 {
+        transform: rotate(360deg);
+    }
+
+    /* Cookie Cards */
+    .card.border-primary,
+    .card.border-success,
+    .card.border-warning {
+        transition: all var(--transition);
+        border-width: 2px !important;
+    }
+
+    .card.border-primary:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0 20px var(--primary-light);
+    }
+
+    .card.border-success:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0 20px var(--success-light);
+    }
+
+    .card.border-warning:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0 20px var(--warning-light);
+    }
+
+    /* Contact Card */
+    .bg-light {
+        background: linear-gradient(135deg, var(--gray-50), var(--gray-100)) !important;
+        transition: all var(--transition);
+        border: 1px solid var(--gray-200) !important;
+    }
+
+    .bg-light:hover {
+        border-color: var(--primary) !important;
+        box-shadow: var(--shadow-lg);
+    }
+
+    /* Policy Updates Section */
+    .border.rounded.p-4.bg-light {
+        border: 1px solid var(--gray-200) !important;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .border.rounded.p-4.bg-light::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, var(--primary-light) 0%, transparent 70%);
+        opacity: 0;
+        transition: opacity var(--transition);
+        animation: rotate 20s linear infinite;
+    }
+
+    .border.rounded.p-4.bg-light:hover::before {
+        opacity: 0.1;
+    }
+
+    @keyframes rotate {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+
+    /* Back to Top Button */
+    .btn {
+        padding: 0.875rem 2rem;
+        border-radius: var(--radius-lg);
+        font-weight: 600;
+        font-size: 1rem;
+        transition: all var(--transition-bounce);
+        border: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        transform: translate(-50%, -50%);
+        transition: width 0.6s, height 0.6s;
+    }
+
+    .btn:hover::before {
+        width: 300px;
+        height: 300px;
+    }
+
+    .btn-outline-primary {
+        background: transparent;
+        color: var(--primary);
+        border: 2px solid var(--primary);
+    }
+
+    .btn-outline-primary:hover {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: white;
+        transform: translateY(-2px);
+        border-color: transparent;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-2xl);
+    }
+
+    /* Animations */
+    @keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes expandWidth {
+        from { width: 0; }
+        to { width: 80px; }
+    }
+
+    /* Toast Notification */
+    .toast-notification {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        background: linear-gradient(135deg, var(--success), #059669);
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-2xl);
+        transform: translateX(400px);
+        transition: transform 0.3s ease;
+        z-index: 9999;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .toast-notification.show {
+        transform: translateX(0);
+    }
+
+    .toast-notification i {
+        font-size: 1.25rem;
+    }
+
+    /* Loading Spinner */
+    .spinner {
+        width: 20px;
+        height: 20px;
+        border: 3px solid rgba(255,255,255,0.3);
+        border-top-color: white;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .container {
+            padding: 0 1.5rem;
+        }
+
+        .display-5 {
+            font-size: 2rem;
+        }
+
+        .lead {
+            font-size: 1.1rem;
+        }
+
+        .card-body {
+            padding: 1.5rem !important;
+        }
+
+        .btn {
+            width: 100%;
+            margin-bottom: 0.5rem;
+        }
+
+        .btn.ms-2 {
+            margin-left: 0 !important;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .display-5 {
+            font-size: 1.75rem;
+        }
+
+        .lead {
+            font-size: 1rem;
+        }
+
+        .col-md-3.col-6 {
+            width: 50%;
+        }
+
+        .table td, .table th {
+            font-size: 0.85rem;
+            padding: 0.5rem;
+        }
+    }
+
+    /* Dark Mode */
+    @media (prefers-color-scheme: dark) {
+        body {
+            background: linear-gradient(135deg, var(--gray-900), var(--gray-800));
+            color: var(--gray-200);
+        }
+
+        .display-5 {
+            color: white;
+        }
+
+        .lead {
+            color: var(--gray-400) !important;
+        }
+
+        .card {
+            background: var(--gray-800);
+        }
+
+        .card-title {
+            color: white;
+        }
+
+        .border.rounded.p-2.text-center {
+            background: var(--gray-800);
+            border-color: var(--gray-700) !important;
+        }
+
+        .border.rounded.p-2.text-center small {
+            color: var(--gray-300) !important;
+        }
+
+        .border.rounded.p-3 {
+            background: var(--gray-800);
+            border-color: var(--gray-700) !important;
+            color: var(--gray-300);
+        }
+
+        .table thead th {
+            background: linear-gradient(135deg, var(--gray-700), var(--gray-800));
+            color: var(--gray-300);
+        }
+
+        .table tbody td {
+            color: var(--gray-300);
+            border-bottom-color: var(--gray-700);
+        }
+
+        .table tbody tr:hover {
+            background: var(--gray-700) !important;
+        }
+
+        .bg-light {
+            background: linear-gradient(135deg, var(--gray-700), var(--gray-800)) !important;
+            color: var(--gray-300);
+        }
+
+        .list-unstyled li:hover {
+            background: var(--gray-700);
+        }
+
+        .text-muted {
+            color: var(--gray-400) !important;
+        }
+    }
+
+    /* Print Styles */
+    @media print {
+        .btn,
+        .toast-notification {
+            display: none;
+        }
+
+        .card {
+            box-shadow: none;
+            border: 1px solid #ddd;
+            break-inside: avoid;
+        }
+    }
+</style>
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-10 mx-auto">
+            <!-- Page Header -->
+            <div class="text-center mb-5">
+                <h1 class="display-5 fw-bold mb-3">
+                    <i class="bi bi-shield-check me-2"></i>
+                    Privacy Policy
+                </h1>
+                <p class="lead text-muted">Last Updated: <span class="fw-bold">{{ current_date.strftime('%B %d, %Y') if current_date else 'January 1, 2024' }}</span></p>
+                <div class="alert alert-info d-inline-flex align-items-center mt-3">
+                    <i class="bi bi-info-circle me-2"></i>
+                    <small>This policy describes how we collect, use, and protect your personal information.</small>
+                </div>
+            </div>
+
+            <!-- Quick Navigation -->
+            <div class="card border-0 shadow-sm mb-5">
+                <div class="card-body p-4">
+                    <h5 class="card-title mb-3">
+                        <i class="bi bi-list-ul me-2 text-primary"></i>
+                        Quick Navigation
+                    </h5>
+                    <div class="row g-3">
+                        <div class="col-md-3 col-6">
+                            <a href="#information-collection" class="text-decoration-none quick-nav-link">
+                                <div class="border rounded p-2 text-center hover-shadow">
+                                    <i class="bi bi-collection d-block fs-4 text-primary"></i>
+                                    <small class="fw-bold">Information We Collect</small>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <a href="#data-usage" class="text-decoration-none quick-nav-link">
+                                <div class="border rounded p-2 text-center hover-shadow">
+                                    <i class="bi bi-gear d-block fs-4 text-success"></i>
+                                    <small class="fw-bold">How We Use Data</small>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <a href="#data-sharing" class="text-decoration-none quick-nav-link">
+                                <div class="border rounded p-2 text-center hover-shadow">
+                                    <i class="bi bi-share d-block fs-4 text-warning"></i>
+                                    <small class="fw-bold">Data Sharing</small>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <a href="#your-rights" class="text-decoration-none quick-nav-link">
+                                <div class="border rounded p-2 text-center hover-shadow">
+                                    <i class="bi bi-shield-lock d-block fs-4 text-danger"></i>
+                                    <small class="fw-bold">Your Rights</small>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Introduction -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-4">
+                    <h3 class="card-title mb-3">Introduction</h3>
+                    <p class="text-muted">At ShopMetuge, we are committed to protecting your privacy and ensuring the security of your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website <strong>shopmetuge.com</strong> or make a purchase from us.</p>
+                    <p class="text-muted mb-0">Please read this privacy policy carefully. If you do not agree with the terms of this privacy policy, please do not access the site or use our services.</p>
+                </div>
+            </div>
+
+            <!-- Information We Collect -->
+            <div id="information-collection" class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-4">
+                    <h3 class="card-title mb-4">
+                        <i class="bi bi-collection me-2 text-primary"></i>
+                        Information We Collect
+                    </h3>
+                    
+                    <h5 class="mt-4">Personal Information You Provide</h5>
+                    <ul class="list-unstyled ms-4">
+                        <li class="mb-2">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            <strong>Account Information:</strong> Name, email address, phone number, shipping/billing address
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            <strong>Payment Information:</strong> Credit/debit card details (processed securely through payment processors)
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            <strong>Communication Data:</strong> Messages, feedback, and inquiries sent to our support team
+                        </li>
+                        <li>
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            <strong>Preferences:</strong> Communication preferences and marketing choices
+                        </li>
+                    </ul>
+                    
+                    <h5 class="mt-4">Automatically Collected Information</h5>
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <div class="border rounded p-3 mb-3">
+                                <h6><i class="bi bi-laptop me-2 text-primary"></i>Device Information</h6>
+                                <small class="text-muted">IP address, browser type, device type, operating system</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="border rounded p-3 mb-3">
+                                <h6><i class="bi bi-bar-chart me-2 text-success"></i>Usage Information</h6>
+                                <small class="text-muted">Pages visited, time spent, clicks, referral URLs</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="border rounded p-3">
+                                <h6><i class="bi bi-cookie me-2 text-warning"></i>Cookies & Tracking</h6>
+                                <small class="text-muted">Session cookies, persistent cookies, analytics cookies</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="border rounded p-3">
+                                <h6><i class="bi bi-geo-alt me-2 text-info"></i>Location Data</h6>
+                                <small class="text-muted">General location (country, city) for tax and shipping purposes</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- How We Use Your Information -->
+            <div id="data-usage" class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-4">
+                    <h3 class="card-title mb-4">
+                        <i class="bi bi-gear me-2 text-success"></i>
+                        How We Use Your Information
+                    </h3>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Purpose</th>
+                                    <th>Description</th>
+                                    <th>Legal Basis</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Order Processing</td>
+                                    <td>Process and fulfill your purchases</td>
+                                    <td><span class="badge bg-primary">Contractual</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Customer Service</td>
+                                    <td>Respond to inquiries and provide support</td>
+                                    <td><span class="badge bg-primary">Contractual</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Website Improvement</td>
+                                    <td>Analyze usage patterns to enhance user experience</td>
+                                    <td><span class="badge bg-success">Legitimate Interest</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Marketing Communications</td>
+                                    <td>Send promotional emails (with consent)</td>
+                                    <td><span class="badge bg-warning">Consent</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Security & Fraud Prevention</td>
+                                    <td>Protect our website and users</td>
+                                    <td><span class="badge bg-danger">Legal Obligation</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data Sharing & Disclosure -->
+            <div id="data-sharing" class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-4">
+                    <h3 class="card-title mb-4">
+                        <i class="bi bi-share me-2 text-warning"></i>
+                        Data Sharing & Disclosure
+                    </h3>
+                    
+                    <p class="text-muted">We may share your information with third parties only in the following circumstances:</p>
+                    
+                    <div class="row mt-4">
+                        <div class="col-md-4 mb-3">
+                            <div class="border-start border-3 border-primary ps-3">
+                                <h6>Service Providers</h6>
+                                <small class="text-muted">Payment processors, shipping carriers, IT services</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="border-start border-3 border-success ps-3">
+                                <h6>Legal Requirements</h6>
+                                <small class="text-muted">When required by law or to protect our rights</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="border-start border-3 border-info ps-3">
+                                <h6>Business Transfers</h6>
+                                <small class="text-muted">In connection with merger, sale, or acquisition</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-warning mt-3">
+                        <i class="bi bi-exclamation-triangle me-2"></i>
+                        <strong>Important:</strong> We never sell your personal information to third parties for marketing purposes.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data Security -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-4">
+                    <h3 class="card-title mb-4">
+                        <i class="bi bi-lock me-2 text-danger"></i>
+                        Data Security
+                    </h3>
+                    
+                    <p class="text-muted">We implement appropriate technical and organizational security measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction.</p>
+                    
+                    <div class="row mt-4">
+                        <div class="col-md-3 col-6 text-center mb-3">
+                            <div class="border rounded p-3">
+                                <i class="bi bi-credit-card fs-2 text-primary mb-2"></i>
+                                <h6>SSL Encryption</h6>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6 text-center mb-3">
+                            <div class="border rounded p-3">
+                                <i class="bi bi-database-check fs-2 text-success mb-2"></i>
+                                <h6>Secure Storage</h6>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6 text-center mb-3">
+                            <div class="border rounded p-3">
+                                <i class="bi bi-shield-check fs-2 text-warning mb-2"></i>
+                                <h6>Regular Audits</h6>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6 text-center mb-3">
+                            <div class="border rounded p-3">
+                                <i class="bi bi-person-check fs-2 text-info mb-2"></i>
+                                <h6>Access Controls</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Your Rights -->
+            <div id="your-rights" class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-4">
+                    <h3 class="card-title mb-4">
+                        <i class="bi bi-shield-lock me-2 text-danger"></i>
+                        Your Rights & Choices
+                    </h3>
+                    
+                    <p class="text-muted">Depending on your location, you may have the following rights regarding your personal information:</p>
+                    
+                    <div class="row mt-4">
+                        {% set rights = [
+                            ('Access', 'bi-eye', 'primary', 'Right to access your personal data'),
+                            ('Rectification', 'bi-pencil', 'success', 'Right to correct inaccurate data'),
+                            ('Erasure', 'bi-trash', 'danger', 'Right to be forgotten'),
+                            ('Restriction', 'bi-pause', 'warning', 'Right to restrict processing'),
+                            ('Portability', 'bi-arrow-left-right', 'info', 'Right to data portability'),
+                            ('Objection', 'bi-slash-circle', 'secondary', 'Right to object to processing'),
+                            ('Withdraw Consent', 'bi-x-circle', 'dark', 'Right to withdraw consent')
+                        ] %}
+                        
+                        {% for right, icon, color, description in rights %}
+                        <div class="col-md-6 mb-3">
+                            <div class="border rounded p-3 h-100">
+                                <div class="d-flex align-items-center mb-2">
+                                    <div class="bg-{{ color }} bg-opacity-10 rounded-circle p-2 me-3">
+                                        <i class="bi {{ icon }} text-{{ color }}"></i>
+                                    </div>
+                                    <h6 class="mb-0">{{ right }}</h6>
+                                </div>
+                                <small class="text-muted">{{ description }}</small>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="mt-4">
+                        <p class="text-muted">To exercise any of these rights, please contact us using the information provided below.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cookies Policy -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-4">
+                    <h3 class="card-title mb-4">
+                        <i class="bi bi-cookie me-2 text-warning"></i>
+                        Cookies & Tracking Technologies
+                    </h3>
+                    
+                    <p class="text-muted">We use cookies and similar tracking technologies to track activity on our website and hold certain information. Cookies are files with small amounts of data that may include an anonymous unique identifier.</p>
+                    
+                    <div class="row mt-4">
+                        <div class="col-md-4 mb-3">
+                            <div class="card border-primary h-100">
+                                <div class="card-body">
+                                    <h6 class="card-title text-primary"><i class="bi bi-check-circle me-2"></i>Essential Cookies</h6>
+                                    <small class="text-muted">Required for website functionality. Cannot be disabled.</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="card border-success h-100">
+                                <div class="card-body">
+                                    <h6 class="card-title text-success"><i class="bi bi-bar-chart me-2"></i>Analytics Cookies</h6>
+                                    <small class="text-muted">Help us understand how visitors use our site.</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="card border-warning h-100">
+                                <div class="card-body">
+                                    <h6 class="card-title text-warning"><i class="bi bi-megaphone me-2"></i>Marketing Cookies</h6>
+                                    <small class="text-muted">Used to track advertising effectiveness.</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <p class="text-muted">You can instruct your browser to refuse all cookies or to indicate when a cookie is being sent. However, if you do not accept cookies, you may not be able to use some portions of our service.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Information -->
+            <div class="card border-primary shadow-sm">
+                <div class="card-body p-4">
+                    <h3 class="card-title mb-4">
+                        <i class="bi bi-envelope me-2 text-primary"></i>
+                        Contact Us
+                    </h3>
+                    
+                    <p class="text-muted">If you have any questions about this Privacy Policy, please contact us:</p>
+                    
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <ul class="list-unstyled">
+                                <li class="mb-3">
+                                    <i class="bi bi-envelope-fill text-primary me-2"></i>
+                                    <strong>Email:</strong> <a href="mailto:support@shopmetuge.com" class="text-decoration-none">support@shopmetuge.com</a>
+                                </li>
+                                <li class="mb-3">
+                                    <i class="bi bi-geo-alt-fill text-primary me-2"></i>
+                                    <strong>Address:</strong> Hilltop, Isokolo, Limbe
+                                </li>
+                                <li>
+                                    <i class="bi bi-telephone-fill text-primary me-2"></i>
+                                    <strong>Phone:</strong> <a href="tel:+237650970291" class="text-decoration-none">+237 650-970-291</a> / <a href="tel:+237678964511" class="text-decoration-none">+237 678-964-511</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="border rounded p-3 bg-light">
+                                <h6><i class="bi bi-shield-check me-2"></i>Data Protection Officer</h6>
+                                <p class="mb-1"><strong>Name:</strong> Pauli Michel</p>
+                                <p class="mb-0"><strong>Email:</strong> <a href="mailto:lug.limbe@gmail.com" class="text-decoration-none">lug.limbe@gmail.com</a></p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-info mt-4">
+                        <i class="bi bi-clock-history me-2"></i>
+                        <strong>Response Time:</strong> We aim to respond to all privacy-related inquiries within 48 hours during business days.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Policy Updates -->
+            <div class="mt-5 text-center">
+                <div class="border rounded p-4 bg-light">
+                    <h5><i class="bi bi-arrow-repeat me-2 text-primary"></i>Policy Updates</h5>
+                    <p class="mb-0 text-muted">We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the "Last Updated" date at the top of this policy.</p>
+                </div>
+            </div>
+
+            <!-- Back to Top -->
+            <div class="text-center mt-4">
+                <a href="#" class="btn btn-outline-primary" id="backToTop">
+                    <i class="bi bi-arrow-up me-1"></i> Back to Top
+                </a>
+                <a href="{{ url_for('index') }}" class="btn btn-primary ms-2">
+                    <i class="bi bi-house me-1"></i> Return to Home
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Toast Container -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3"></div>
+
+<script>
+    // Modern JavaScript for Privacy Policy Page
+    (function() {
+        'use strict';
+
+        // Toast notification system
+        function showToast(message, type = 'success', icon = 'bi-check-circle-fill') {
+            const toastContainer = document.querySelector('.toast-container');
+            if (!toastContainer) return;
+
+            const colors = {
+                success: 'linear-gradient(135deg, #10b981, #059669)',
+                warning: 'linear-gradient(135deg, #f59e0b, #d97706)',
+                danger: 'linear-gradient(135deg, #ef4444, #dc2626)',
+                info: 'linear-gradient(135deg, #3b82f6, #2563eb)'
+            };
+
+            const toastId = 'toast-' + Date.now();
+            const toastHtml = `
+                <div id="${toastId}" class="toast-notification show" style="background: ${colors[type] || colors.success}">
+                    <i class="bi ${icon}"></i>
+                    <div class="toast-message">${message}</div>
+                </div>
+            `;
+
+            toastContainer.insertAdjacentHTML('beforeend', toastHtml);
+
+            setTimeout(() => {
+                const toast = document.getElementById(toastId);
+                if (toast) {
+                    toast.classList.remove('show');
+                    setTimeout(() => toast.remove(), 300);
+                }
+            }, 3000);
+        }
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const target = document.querySelector(targetId);
+                if (target) {
+                    const sectionName = target.querySelector('h3')?.textContent || 'section';
+                    showToast(`Navigating to ${sectionName}...`, 'info', 'bi-arrow-right');
+                    
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Back to top button
+        document.getElementById('backToTop')?.addEventListener('click', function(e) {
+            e.preventDefault();
+            showToast('Returning to top...', 'info', 'bi-arrow-up');
+            
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Quick navigation cards hover effect
+        document.querySelectorAll('.quick-nav-link').forEach(link => {
+            link.addEventListener('mouseenter', function() {
+                const text = this.querySelector('small')?.textContent;
+                showToast(`Go to: ${text}`, 'info', 'bi-compass');
+            });
+        });
+
+        // Contact links
+        document.querySelectorAll('a[href^="mailto:"], a[href^="tel:"]').forEach(link => {
+            link.addEventListener('click', function() {
+                const type = this.href.startsWith('mailto:') ? 'email' : 'phone';
+                const value = this.href.replace('mailto:', '').replace('tel:', '');
+                showToast(`${type === 'email' ? '📧' : '📞'} Opening ${type} app for: ${value}`, 'info', type === 'email' ? 'bi-envelope' : 'bi-telephone');
+            });
+        });
+
+        // Section visibility tracking
+        const sections = document.querySelectorAll('[id]');
+        const observerOptions = {
+            threshold: 0.5,
+            rootMargin: '0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const sectionName = entry.target.querySelector('h3')?.textContent || entry.target.id;
+                    console.log(`📖 Viewing: ${sectionName}`);
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+
+        // Table row hover effect with info
+        document.querySelectorAll('tbody tr').forEach(row => {
+            row.addEventListener('mouseenter', function() {
+                const purpose = this.querySelector('td:first-child')?.textContent;
+                showToast(`Viewing: ${purpose} details`, 'info', 'bi-table');
+            });
+        });
+
+        // Copy email addresses
+        document.querySelectorAll('a[href^="mailto:"]').forEach(link => {
+            link.addEventListener('dblclick', function(e) {
+                e.preventDefault();
+                const email = this.href.replace('mailto:', '');
+                navigator.clipboard.writeText(email).then(() => {
+                    showToast(`Email address copied: ${email}`, 'success', 'bi-clipboard-check');
+                });
+            });
+        });
+
+        // Print button (optional)
+        const printButton = document.createElement('button');
+        printButton.className = 'btn btn-outline-secondary ms-2';
+        printButton.innerHTML = '<i class="bi bi-printer me-1"></i> Print Policy';
+        printButton.onclick = () => {
+            showToast('Preparing document for printing...', 'info', 'bi-printer');
+            setTimeout(() => {
+                window.print();
+            }, 1000);
+        };
+        
+        document.querySelector('.text-center.mt-4 .btn-primary').after(printButton);
+
+        // Welcome message
+        setTimeout(() => {
+            showToast('🔒 Your privacy is important to us', 'info', 'bi-shield-check');
+        }, 1500);
+
+        // Console greeting
+        console.log('🔒 Privacy Policy Page - Your data protection matters');
+
+        // Expose functions globally
+        window.showToast = showToast;
+    })();
+</script>
+{% endblock %}

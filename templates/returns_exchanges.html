@@ -1,0 +1,1361 @@
+{% extends "base.html" %}
+
+{% block title %}Returns & Exchanges - ShopMetuge{% endblock %}
+
+{% block content %}
+<style>
+    /* Modern Returns & Exchanges Page Styling */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+    :root {
+        --primary: #6366f1;
+        --primary-dark: #4f46e5;
+        --primary-light: #818cf8;
+        --secondary: #8b5cf6;
+        --success: #10b981;
+        --success-dark: #059669;
+        --success-light: #d1fae5;
+        --danger: #ef4444;
+        --danger-light: #fee2e2;
+        --warning: #f59e0b;
+        --warning-dark: #d97706;
+        --warning-light: #fef3c7;
+        --info: #3b82f6;
+        --info-dark: #2563eb;
+        --info-light: #dbeafe;
+        --gray-50: #f9fafb;
+        --gray-100: #f3f4f6;
+        --gray-200: #e5e7eb;
+        --gray-300: #d1d5db;
+        --gray-400: #9ca3af;
+        --gray-500: #6b7280;
+        --gray-600: #4b5563;
+        --gray-700: #374151;
+        --gray-800: #1f2937;
+        --gray-900: #111827;
+        
+        --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+        --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+        --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+        
+        --radius-sm: 0.375rem;
+        --radius: 0.5rem;
+        --radius-md: 0.75rem;
+        --radius-lg: 1rem;
+        --radius-xl: 1.5rem;
+        --radius-2xl: 2rem;
+        --radius-full: 9999px;
+        
+        --transition-fast: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+        --transition: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+        --transition-bounce: 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    body {
+        background: linear-gradient(135deg, var(--gray-50) 0%, #ffffff 100%);
+        font-family: 'Inter', sans-serif;
+    }
+
+    .container {
+        max-width: 1280px;
+    }
+
+    /* Hero Section */
+    .text-center.mb-5 {
+        animation: fadeInUp 0.8s ease-out;
+    }
+
+    .bg-success.bg-opacity-10 {
+        background: linear-gradient(135deg, var(--success-light), #a7f3d0) !important;
+        transition: all var(--transition);
+    }
+
+    .bg-success.bg-opacity-10:hover {
+        transform: rotate(360deg) scale(1.1);
+        transition: transform 0.6s ease;
+    }
+
+    .display-5 {
+        font-size: clamp(2rem, 5vw, 2.5rem);
+        font-weight: 800;
+        color: var(--gray-900);
+        position: relative;
+        display: inline-block;
+    }
+
+    .display-5::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(90deg, var(--success), var(--success-dark));
+        border-radius: var(--radius-full);
+        animation: expandWidth 0.8s ease-out 0.3s both;
+    }
+
+    .lead {
+        color: var(--gray-600) !important;
+        font-size: 1.25rem;
+    }
+
+    /* Status Indicators */
+    .border.rounded.p-3.bg-white {
+        transition: all var(--transition-bounce);
+        border: 1px solid var(--gray-200) !important;
+    }
+
+    .border.rounded.p-3.bg-white:hover {
+        transform: translateY(-5px) scale(1.02);
+        box-shadow: var(--shadow-xl) !important;
+        border-color: var(--success) !important;
+    }
+
+    .bg-opacity-10.rounded-circle {
+        transition: all var(--transition);
+    }
+
+    .border.rounded.p-3.bg-white:hover .bg-opacity-10.rounded-circle {
+        transform: scale(1.1) rotate(360deg);
+    }
+
+    .fs-4 {
+        transition: all var(--transition);
+    }
+
+    .border.rounded.p-3.bg-white:hover .fs-4 {
+        transform: scale(1.2);
+    }
+
+    /* Process Steps Cards */
+    .card.border-0.shadow-sm {
+        transition: all var(--transition-bounce);
+        border: 1px solid transparent !important;
+    }
+
+    .card.border-0.shadow-sm:hover {
+        transform: translateY(-10px);
+        box-shadow: var(--shadow-2xl) !important;
+        border-color: var(--primary) !important;
+    }
+
+    .position-absolute.top-0.start-50.translate-middle {
+        z-index: 10;
+    }
+
+    .position-absolute .bg-primary {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark)) !important;
+        box-shadow: var(--shadow-lg);
+        font-weight: 700;
+        transition: all var(--transition);
+    }
+
+    .card:hover .position-absolute .bg-primary {
+        transform: scale(1.2);
+        box-shadow: var(--shadow-xl);
+    }
+
+    .bg-primary.bg-opacity-10 {
+        background: linear-gradient(135deg, var(--primary-light), #c7d2fe) !important;
+        transition: all var(--transition);
+    }
+
+    .card:hover .bg-primary.bg-opacity-10 {
+        transform: rotate(360deg);
+    }
+
+    /* Policy Details Cards */
+    .border-start.border-3 {
+        transition: all var(--transition);
+    }
+
+    .border-start.border-3:hover {
+        transform: translateX(10px);
+    }
+
+    .border-start.border-3.border-success:hover {
+        border-left-color: var(--success-dark) !important;
+    }
+
+    .border-start.border-3.border-danger:hover {
+        border-left-color: var(--danger) !important;
+    }
+
+    /* Table Styling */
+    .table {
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        box-shadow: var(--shadow);
+    }
+
+    .table thead th {
+        background: linear-gradient(135deg, var(--gray-100), var(--gray-200));
+        color: var(--gray-700);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-size: 0.9rem;
+        border-bottom: 2px solid var(--gray-300);
+    }
+
+    .table tbody tr {
+        transition: all var(--transition);
+    }
+
+    .table tbody tr:hover {
+        background: var(--gray-50) !important;
+        transform: scale(1.01);
+        box-shadow: var(--shadow);
+    }
+
+    .table td i.bi-check-circle-fill.text-success {
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.2); }
+        100% { transform: scale(1); }
+    }
+
+    /* Timeline */
+    .timeline {
+        position: relative;
+        padding-left: 30px;
+    }
+    
+    .timeline::before {
+        content: '';
+        position: absolute;
+        left: 15px;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        background: linear-gradient(180deg, var(--primary), var(--success), var(--warning), var(--info));
+        border-radius: var(--radius-full);
+        animation: gradientMove 5s linear infinite;
+        background-size: 200% 100%;
+    }
+
+    @keyframes gradientMove {
+        0% { background-position: 0% 0; }
+        100% { background-position: 0% 200%; }
+    }
+    
+    .timeline-item {
+        position: relative;
+        animation: slideInRight 0.6s ease-out;
+        animation-fill-mode: both;
+    }
+
+    .timeline-item:nth-child(1) { animation-delay: 0.1s; }
+    .timeline-item:nth-child(2) { animation-delay: 0.2s; }
+    .timeline-item:nth-child(3) { animation-delay: 0.3s; }
+    .timeline-item:nth-child(4) { animation-delay: 0.4s; }
+    
+    .timeline-marker {
+        position: absolute;
+        left: -30px;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        box-shadow: var(--shadow);
+        transition: all var(--transition);
+    }
+
+    .timeline-item:hover .timeline-marker {
+        transform: scale(1.5);
+        box-shadow: var(--shadow-xl);
+    }
+
+    .timeline-content {
+        margin-left: 15px;
+    }
+
+    @keyframes slideInRight {
+        from {
+            opacity: 0;
+            transform: translateX(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    /* Exchange Cards */
+    .card.border-0.shadow-sm.h-100 {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .card.border-0.shadow-sm.h-100::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--success), var(--primary));
+        transform: scaleX(0);
+        transition: transform 0.5s ease;
+        transform-origin: left;
+    }
+
+    .card.border-0.shadow-sm.h-100:hover::before {
+        transform: scaleX(1);
+    }
+
+    /* FAQ Accordion */
+    .accordion-item {
+        border: 1px solid var(--gray-200) !important;
+        border-radius: var(--radius-lg) !important;
+        overflow: hidden;
+        transition: all var(--transition);
+    }
+
+    .accordion-item:hover {
+        border-color: var(--primary) !important;
+        box-shadow: var(--shadow);
+    }
+
+    .accordion-button {
+        font-weight: 600;
+        color: var(--gray-800);
+        background: white;
+        transition: all var(--transition);
+    }
+
+    .accordion-button:not(.collapsed) {
+        background: linear-gradient(135deg, var(--success-light), #a7f3d0);
+        color: var(--success-dark);
+        font-weight: 700;
+    }
+
+    .accordion-button:focus {
+        box-shadow: none;
+        border-color: var(--success);
+    }
+
+    .accordion-button::after {
+        transition: transform var(--transition);
+    }
+
+    .accordion-button:not(.collapsed)::after {
+        transform: rotate(90deg);
+    }
+
+    .accordion-body {
+        background: var(--gray-50);
+        color: var(--gray-700);
+        line-height: 1.7;
+    }
+
+    /* Refund Methods Cards */
+    .card.border-0.shadow-sm.h-100 .bg-opacity-10 {
+        transition: all var(--transition);
+    }
+
+    .card.border-0.shadow-sm.h-100:hover .bg-opacity-10 {
+        transform: rotate(360deg);
+    }
+
+    .badge.bg-success {
+        background: linear-gradient(135deg, var(--success), var(--success-dark)) !important;
+        animation: pulse 2s infinite;
+    }
+
+    /* In-Store Returns & Return Form Cards */
+    .card.border-primary {
+        border: 2px solid var(--primary) !important;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .card.border-primary::after {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(45deg, transparent, rgba(99, 102, 241, 0.1), transparent);
+        transform: rotate(45deg);
+        animation: shimmer 3s infinite;
+    }
+
+    @keyframes shimmer {
+        0% { transform: translateX(-100%) rotate(45deg); }
+        100% { transform: translateX(100%) rotate(45deg); }
+    }
+
+    /* Form Inputs */
+    .form-control {
+        border: 2px solid var(--gray-200);
+        border-radius: var(--radius-lg);
+        padding: 0.875rem 1rem;
+        font-size: 1rem;
+        transition: all var(--transition-fast);
+        background: var(--gray-50);
+    }
+
+    .form-control:focus {
+        border-color: var(--primary);
+        outline: none;
+        box-shadow: 0 0 0 4px var(--primary-light);
+        background: white;
+    }
+
+    .form-control.is-valid {
+        border-color: var(--success);
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%2310b981' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
+    }
+
+    .form-control.is-invalid {
+        border-color: var(--danger);
+    }
+
+    /* Buttons */
+    .btn {
+        padding: 0.875rem 1.5rem;
+        border-radius: var(--radius-lg);
+        font-weight: 600;
+        font-size: 1rem;
+        transition: all var(--transition-bounce);
+        border: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        transform: translate(-50%, -50%);
+        transition: width 0.6s, height 0.6s;
+    }
+
+    .btn:hover::before {
+        width: 300px;
+        height: 300px;
+    }
+
+    .btn-success {
+        background: linear-gradient(135deg, var(--success), var(--success-dark));
+        color: white;
+    }
+
+    .btn-success:hover {
+        background: linear-gradient(135deg, var(--success-dark), var(--success));
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-xl);
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-xl);
+    }
+
+    .btn-outline-primary {
+        background: transparent;
+        color: var(--primary);
+        border: 2px solid var(--primary);
+    }
+
+    .btn-outline-primary:hover {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: white;
+        transform: translateY(-2px);
+        border-color: transparent;
+    }
+
+    .btn-outline-secondary {
+        background: transparent;
+        color: var(--gray-600);
+        border: 2px solid var(--gray-300);
+    }
+
+    .btn-outline-secondary:hover {
+        background: var(--gray-200);
+        color: var(--gray-800);
+        transform: translateY(-2px);
+    }
+
+    .btn-lg {
+        padding: 1rem 2rem;
+        font-size: 1.1rem;
+    }
+
+    /* Contact Support Section */
+    .card.border-success {
+        border: 2px solid var(--success) !important;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .card.border-success::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(16, 185, 129, 0.1) 0%, transparent 70%);
+        animation: rotate 20s linear infinite;
+    }
+
+    @keyframes rotate {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+
+    .border.rounded.p-3 {
+        transition: all var(--transition);
+        border: 1px solid var(--gray-200) !important;
+        background: white;
+    }
+
+    .border.rounded.p-3:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-lg);
+        border-color: var(--primary) !important;
+    }
+
+    .border.rounded.p-3 i {
+        transition: all var(--transition);
+    }
+
+    .border.rounded.p-3:hover i {
+        transform: scale(1.2);
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes expandWidth {
+        from { width: 0; }
+        to { width: 80px; }
+    }
+
+    /* Toast Notification */
+    .toast-notification {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        background: linear-gradient(135deg, var(--success), #059669);
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-2xl);
+        transform: translateX(400px);
+        transition: transform 0.3s ease;
+        z-index: 9999;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .toast-notification.show {
+        transform: translateX(0);
+    }
+
+    .toast-notification i {
+        font-size: 1.25rem;
+    }
+
+    /* Loading Spinner */
+    .spinner {
+        width: 20px;
+        height: 20px;
+        border: 3px solid rgba(255,255,255,0.3);
+        border-top-color: white;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .container {
+            padding: 0 1.5rem;
+        }
+
+        .display-5 {
+            font-size: 2rem;
+        }
+
+        .lead {
+            font-size: 1.1rem;
+        }
+
+        .col-lg-3.col-md-6 {
+            margin-bottom: 1rem;
+        }
+
+        .timeline::before {
+            left: 10px;
+        }
+
+        .timeline-marker {
+            left: -25px;
+            width: 12px;
+            height: 12px;
+        }
+
+        .btn-lg {
+            padding: 0.875rem 1.5rem;
+            font-size: 1rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .display-5 {
+            font-size: 1.75rem;
+        }
+
+        .lead {
+            font-size: 1rem;
+        }
+
+        .border.rounded.p-3.bg-white {
+            margin-bottom: 0.5rem;
+        }
+
+        .card-body {
+            padding: 1.5rem !important;
+        }
+
+        .btn {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .d-flex.align-items-start {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .d-flex.align-items-start i {
+            margin-bottom: 0.5rem;
+        }
+    }
+
+    /* Dark Mode */
+    @media (prefers-color-scheme: dark) {
+        body {
+            background: linear-gradient(135deg, var(--gray-900), var(--gray-800));
+            color: var(--gray-200);
+        }
+
+        .card {
+            background: var(--gray-800);
+            border-color: var(--gray-700) !important;
+        }
+
+        .display-5 {
+            color: white;
+        }
+
+        .border.rounded.p-3.bg-white {
+            background: var(--gray-800) !important;
+            border-color: var(--gray-700) !important;
+        }
+
+        .table thead th {
+            background: linear-gradient(135deg, var(--gray-700), var(--gray-800));
+            color: var(--gray-300);
+        }
+
+        .table tbody td {
+            color: var(--gray-300);
+        }
+
+        .table tbody tr:hover {
+            background: var(--gray-700) !important;
+        }
+
+        .accordion-button {
+            background: var(--gray-800);
+            color: white;
+        }
+
+        .accordion-body {
+            background: var(--gray-700);
+            color: var(--gray-300);
+        }
+
+        .form-control {
+            background: var(--gray-700);
+            border-color: var(--gray-600);
+            color: white;
+        }
+
+        .form-control:focus {
+            background: var(--gray-600);
+        }
+
+        .border.rounded.p-3 {
+            background: var(--gray-800);
+        }
+    }
+</style>
+
+<div class="container py-5">
+    <!-- Hero Section -->
+    <div class="text-center mb-5">
+        <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex p-4 mb-4 animate-icon">
+            <i class="bi bi-arrow-left-right fs-1 text-success"></i>
+        </div>
+        <h1 class="display-5 fw-bold mb-3">Returns & Exchanges</h1>
+        <p class="lead text-muted mb-4">Easy, hassle-free returns and exchanges within 30 days</p>
+        
+        <!-- Status Indicators -->
+        <div class="row justify-content-center g-3">
+            <div class="col-lg-3 col-md-6">
+                <div class="border rounded p-3 bg-white shadow-sm">
+                    <div class="d-flex align-items-center">
+                        <div class="bg-success bg-opacity-10 rounded-circle p-2 me-3">
+                            <i class="bi bi-check-circle fs-4 text-success"></i>
+                        </div>
+                        <div class="text-start">
+                            <h5 class="mb-0">30-Day Policy</h5>
+                            <small class="text-muted">Risk-free returns</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="border rounded p-3 bg-white shadow-sm">
+                    <div class="d-flex align-items-center">
+                        <div class="bg-primary bg-opacity-10 rounded-circle p-2 me-3">
+                            <i class="bi bi-truck fs-4 text-primary"></i>
+                        </div>
+                        <div class="text-start">
+                            <h5 class="mb-0">Free Returns</h5>
+                            <small class="text-muted">For defective items</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="border rounded p-3 bg-white shadow-sm">
+                    <div class="d-flex align-items-center">
+                        <div class="bg-warning bg-opacity-10 rounded-circle p-2 me-3">
+                            <i class="bi bi-clock-history fs-4 text-warning"></i>
+                        </div>
+                        <div class="text-start">
+                            <h5 class="mb-0">Fast Refunds</h5>
+                            <small class="text-muted">Within 5-7 days</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="border rounded p-3 bg-white shadow-sm">
+                    <div class="d-flex align-items-center">
+                        <div class="bg-info bg-opacity-10 rounded-circle p-2 me-3">
+                            <i class="bi bi-shield-check fs-4 text-info"></i>
+                        </div>
+                        <div class="text-start">
+                            <h5 class="mb-0">Easy Process</h5>
+                            <small class="text-muted">Online or in-store</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Return Process Steps -->
+    <div class="row mb-5">
+        <div class="col-12 mb-4">
+            <h3 class="mb-4"><i class="bi bi-list-check me-2 text-primary"></i>Return Process in 4 Easy Steps</h3>
+        </div>
+        
+        {% set steps = [
+            ('Initiate Return', 'bi-box-arrow-right', '1', 'Log in to your account, go to "My Orders", select the item and choose return reason.'),
+            ('Print Label', 'bi-printer', '2', 'Print the prepaid return label or generate a QR code for drop-off.'),
+            ('Package Item', 'bi-box-seam', '3', 'Pack item securely in original packaging with all accessories and tags.'),
+            ('Drop Off', 'bi-truck', '4', 'Drop package at designated carrier location or schedule a pickup.')
+        ] %}
+        
+        {% for title, icon, number, description in steps %}
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card border-0 shadow-sm h-100 text-center position-relative">
+                <div class="position-absolute top-0 start-50 translate-middle">
+                    <span class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center step-number" style="width: 40px; height: 40px;">
+                        {{ number }}
+                    </span>
+                </div>
+                <div class="card-body pt-5 pb-4 px-4">
+                    <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
+                        <i class="bi {{ icon }} fs-3 text-primary"></i>
+                    </div>
+                    <h5 class="card-title mb-3">{{ title }}</h5>
+                    <p class="card-text text-muted">{{ description }}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Policy Details -->
+    <div class="row mb-5">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body p-4">
+                    <h3 class="card-title mb-4"><i class="bi bi-file-text me-2 text-primary"></i>Return Policy Details</h3>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <div class="border-start border-3 border-success ps-3 policy-section">
+                                <h6 class="text-success"><i class="bi bi-check-circle me-2"></i>Eligible Items</h6>
+                                <ul class="mb-0 text-muted">
+                                    <li>Unused items in original condition</li>
+                                    <li>Original packaging with tags</li>
+                                    <li>All accessories included</li>
+                                    <li>Within 30 days of delivery</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <div class="border-start border-3 border-danger ps-3 policy-section">
+                                <h6 class="text-danger"><i class="bi bi-x-circle me-2"></i>Non-Returnable Items</h6>
+                                <ul class="mb-0 text-muted">
+                                    <li>Personalized/custom items</li>
+                                    <li>Opened software or digital goods</li>
+                                    <li>Intimate apparel & swimwear</li>
+                                    <li>Gift cards</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <h5 class="mb-3"><i class="bi bi-table me-2"></i>Condition Requirements</h5>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Item Condition</th>
+                                        <th>Acceptable for Return</th>
+                                        <th>Refund Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>New, Unused</td>
+                                        <td><i class="bi bi-check-circle-fill text-success me-1"></i> Yes</td>
+                                        <td>100%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Gently Used</td>
+                                        <td><i class="bi bi-check-circle-fill text-warning me-1"></i> Case by case</td>
+                                        <td>Up to 70%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Damaged/Defective</td>
+                                        <td><i class="bi bi-check-circle-fill text-success me-1"></i> Yes</td>
+                                        <td>100% + free return</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Missing Parts</td>
+                                        <td><i class="bi bi-x-circle-fill text-danger me-1"></i> No</td>
+                                        <td>0%</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="card border-primary shadow-sm h-100">
+                <div class="card-body p-4">
+                    <h4 class="card-title mb-4"><i class="bi bi-calendar-check me-2 text-primary"></i>Important Timelines</h4>
+                    
+                    <div class="timeline">
+                        <div class="timeline-item mb-4">
+                            <div class="timeline-marker bg-primary"></div>
+                            <div class="timeline-content">
+                                <h6 class="mb-1">Return Window</h6>
+                                <p class="text-muted mb-0">30 days from delivery date</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item mb-4">
+                            <div class="timeline-marker bg-success"></div>
+                            <div class="timeline-content">
+                                <h6 class="mb-1">Refund Processing</h6>
+                                <p class="text-muted mb-0">5-7 business days after receipt</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item mb-4">
+                            <div class="timeline-marker bg-warning"></div>
+                            <div class="timeline-content">
+                                <h6 class="mb-1">Exchange Processing</h6>
+                                <p class="text-muted mb-0">3-5 business days after receipt</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-marker bg-info"></div>
+                            <div class="timeline-content">
+                                <h6 class="mb-1">Store Credit</h6>
+                                <p class="text-muted mb-0">Issued immediately upon approval</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-info mt-4">
+                        <i class="bi bi-info-circle me-2"></i>
+                        <small>Holiday season purchases (Nov 15 - Dec 25) have extended return until Jan 15.</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Exchange Process -->
+    <div class="row mb-5">
+        <div class="col-12 mb-4">
+            <h3 class="mb-4"><i class="bi bi-arrow-left-right me-2 text-primary"></i>Exchange Process</h3>
+        </div>
+        
+        <div class="col-md-6 mb-4">
+            <div class="card border-0 shadow-sm h-100 exchange-card">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex p-2 me-3">
+                            <i class="bi bi-arrow-left-right fs-3 text-success"></i>
+                        </div>
+                        <h4 class="mb-0">Direct Exchange</h4>
+                    </div>
+                    <p class="text-muted">Exchange for a different size, color, or variant of the same item.</p>
+                    <ul class="text-muted">
+                        <li><i class="bi bi-check text-success me-1"></i>No additional payment if same price</li>
+                        <li><i class="bi bi-check text-success me-1"></i>Price difference charged/refunded if different</li>
+                        <li><i class="bi bi-check text-success me-1"></i>Free return shipping for exchanges</li>
+                        <li><i class="bi bi-check text-success me-1"></i>New item shipped once return is scanned</li>
+                    </ul>
+                    <button class="btn btn-success mt-2 start-exchange">
+                        <i class="bi bi-arrow-left-right me-2"></i>Start Exchange
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 mb-4">
+            <div class="card border-0 shadow-sm h-100 exchange-card">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex p-2 me-3">
+                            <i class="bi bi-currency-exchange fs-3 text-primary"></i>
+                        </div>
+                        <h4 class="mb-0">Return & Repurchase</h4>
+                    </div>
+                    <p class="text-muted">Return your item and purchase a different item entirely.</p>
+                    <ul class="text-muted">
+                        <li><i class="bi bi-check text-primary me-1"></i>Return processed normally</li>
+                        <li><i class="bi bi-check text-primary me-1"></i>Refund issued to original payment method</li>
+                        <li><i class="bi bi-check text-primary me-1"></i>Place new order separately</li>
+                        <li><i class="bi bi-check text-primary me-1"></i>Use store credit for immediate purchase</li>
+                    </ul>
+                    <button class="btn btn-primary mt-2 start-return">
+                        <i class="bi bi-arrow-counterclockwise me-2"></i>Return & Shop
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAQ Section -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <h3 class="card-title mb-4"><i class="bi bi-question-circle me-2 text-primary"></i>Frequently Asked Questions</h3>
+                    
+                    <div class="accordion" id="returnsFAQ">
+                        {% set faqs = [
+                            ('How long do I have to return an item?', 'You have 30 days from the delivery date to initiate a return. Holiday purchases have extended returns until January 15.', 'timeframe'),
+                            ('Who pays for return shipping?', 'We provide free return shipping for defective, damaged, or incorrect items. For other returns, the customer pays unless you choose store credit.', 'shipping'),
+                            ('How will I receive my refund?', 'Refunds are issued to your original payment method within 5-7 business days after we receive and inspect the return.', 'refund-method'),
+                            ('Can I return an item purchased with a gift card?', 'Yes, returns for gift card purchases will be refunded as store credit to your account.', 'gift-card'),
+                            ('What if I received a damaged or wrong item?', 'Contact us immediately. We\'ll send a replacement right away and provide a prepaid return label for the incorrect item.', 'damaged'),
+                            ('Can I return an item without the original packaging?', 'Items must be returned in their original packaging with all tags and accessories. Returns without packaging may be subject to a restocking fee.', 'packaging'),
+                            ('How do I check my return status?', 'Log in to your account and visit "My Returns" to track your return status in real-time.', 'status'),
+                            ('Can I return sale or clearance items?', 'Sale items are returnable within 30 days. Clearance items are final sale unless defective.', 'sale-items')
+                        ] %}
+                        
+                        {% for question, answer, id in faqs %}
+                        <div class="accordion-item border-0 mb-2">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed rounded" type="button" data-bs-toggle="collapse" data-bs-target="#faq{{ loop.index }}">
+                                    {{ question }}
+                                </button>
+                            </h2>
+                            <div id="faq{{ loop.index }}" class="accordion-collapse collapse" data-bs-parent="#returnsFAQ">
+                                <div class="accordion-body">
+                                    {{ answer }}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Refund Methods -->
+    <div class="row mb-5">
+        <div class="col-12 mb-4">
+            <h3 class="mb-4"><i class="bi bi-wallet2 me-2 text-primary"></i>Refund Methods</h3>
+        </div>
+        
+        {% set refund_methods = [
+            ('Original Payment', 'credit-card', 'primary', 'Refunded to original credit/debit card or PayPal account within 5-7 business days.'),
+            ('Store Credit', 'gift', 'success', 'Instant store credit to your account for future purchases. Get 10% bonus on store credit refunds.'),
+            ('ShopMetuge Gift Card', 'card-text', 'warning', 'Digital gift card emailed immediately upon return approval.'),
+            ('Bank Transfer', 'bank', 'info', 'Available for wire transfers (additional 3-5 business days).')
+        ] %}
+        
+        {% for method, icon, color, description in refund_methods %}
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card border-0 shadow-sm h-100 refund-card">
+                <div class="card-body p-4 text-center">
+                    <div class="bg-{{ color }} bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
+                        <i class="bi bi-{{ icon }} fs-3 text-{{ color }}"></i>
+                    </div>
+                    <h5 class="card-title mb-3">{{ method }}</h5>
+                    <p class="card-text text-muted small">{{ description }}</p>
+                    {% if method == 'Store Credit' %}
+                    <span class="badge bg-success"><i class="bi bi-stars"></i> +10% Bonus</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Return Options -->
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card border-0 shadow-sm h-100 store-return-card">
+                <div class="card-body p-4">
+                    <h4 class="card-title mb-4"><i class="bi bi-shop me-2 text-primary"></i>In-Store Returns</h4>
+                    <div class="d-flex align-items-start mb-3">
+                        <i class="bi bi-check-circle-fill text-success mt-1 me-3 fs-5"></i>
+                        <div>
+                            <h6 class="mb-1">Instant Refunds</h6>
+                            <p class="text-muted small mb-0">Get refunded immediately at our physical stores</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-start mb-3">
+                        <i class="bi bi-check-circle-fill text-success mt-1 me-3 fs-5"></i>
+                        <div>
+                            <h6 class="mb-1">No Packaging Required</h6>
+                            <p class="text-muted small mb-0">Bring item with receipt - no need for original box</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-start mb-3">
+                        <i class="bi bi-check-circle-fill text-success mt-1 me-3 fs-5"></i>
+                        <div>
+                            <h6 class="mb-1">Immediate Exchange</h6>
+                            <p class="text-muted small mb-0">Swap items on the spot if available in store</p>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <button class="btn btn-outline-primary find-store">
+                            <i class="bi bi-geo-alt me-2"></i>Find Nearest Store
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 mb-4">
+            <div class="card border-primary shadow-sm h-100 return-form-card">
+                <div class="card-body p-4">
+                    <h4 class="card-title mb-4"><i class="bi bi-lightning-charge me-2 text-primary"></i>Start a Return Now</h4>
+                    <p class="card-text mb-4">Ready to return or exchange an item? Start the process online:</p>
+                    
+                    <div class="mb-4">
+                        <label for="orderNumber" class="form-label">Order Number</label>
+                        <input type="text" class="form-control" id="orderNumber" placeholder="e.g., ORD-123456">
+                        <div class="invalid-feedback">Please enter a valid order number</div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="email" class="form-label">Email Address</label>
+                        <input type="email" class="form-control" id="email" placeholder="your@email.com">
+                        <div class="invalid-feedback">Please enter a valid email address</div>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-primary btn-lg start-return-process">
+                            <i class="bi bi-box-arrow-right me-2"></i>Start Return Process
+                        </button>
+                        <button class="btn btn-outline-secondary contact-support">
+                            <i class="bi bi-question-circle me-2"></i>Need Help? Contact Support
+                        </button>
+                    </div>
+                    
+                    <div class="mt-4 text-center">
+                        <small class="text-muted">
+                            <i class="bi bi-shield-check me-1"></i>
+                            Secure process • No login required • Track return status
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Support -->
+    <div class="text-center mt-5">
+        <div class="card border-success">
+            <div class="card-body p-5">
+                <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex p-4 mb-4">
+                    <i class="bi bi-headset fs-1 text-success"></i>
+                </div>
+                <h3 class="card-title mb-3">Need Help with Your Return?</h3>
+                <p class="card-text mb-4">Our returns specialists are here to help you with any questions or issues.</p>
+                
+                <div class="row justify-content-center">
+                    <div class="col-md-4 mb-3">
+                        <div class="border rounded p-3 contact-card" onclick="window.location.href='mailto:support@shopmetuge.com'">
+                            <i class="bi bi-envelope fs-2 text-primary mb-2"></i>
+                            <h6>Email Support</h6>
+                            <small class="text-muted">support@shopmetuge.com</small>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="border rounded p-3 contact-card" onclick="window.location.href='tel:+237650970291'">
+                            <i class="bi bi-telephone fs-2 text-success mb-2"></i>
+                            <h6>Phone Support</h6>
+                            <small class="text-muted">+237 650-970-291</small>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="border rounded p-3 contact-card" onclick="startLiveChat()">
+                            <i class="bi bi-chat-left-text fs-2 text-warning mb-2"></i>
+                            <h6>Live Chat</h6>
+                            <small class="text-muted">Available 9AM-8PM CAT</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-4">
+                    <p class="text-muted"><i class="bi bi-clock-history me-1"></i> Average response time: Less than 2 hours during business hours</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Toast Container -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3"></div>
+
+<script>
+    // Modern JavaScript for Returns & Exchanges Page
+    (function() {
+        'use strict';
+
+        // Toast notification system
+        function showToast(message, type = 'success', icon = 'bi-check-circle-fill') {
+            const toastContainer = document.querySelector('.toast-container');
+            if (!toastContainer) return;
+
+            const colors = {
+                success: 'linear-gradient(135deg, #10b981, #059669)',
+                warning: 'linear-gradient(135deg, #f59e0b, #d97706)',
+                danger: 'linear-gradient(135deg, #ef4444, #dc2626)',
+                info: 'linear-gradient(135deg, #3b82f6, #2563eb)'
+            };
+
+            const toastId = 'toast-' + Date.now();
+            const toastHtml = `
+                <div id="${toastId}" class="toast-notification show" style="background: ${colors[type] || colors.success}">
+                    <i class="bi ${icon}"></i>
+                    <div class="toast-message">${message}</div>
+                </div>
+            `;
+
+            toastContainer.insertAdjacentHTML('beforeend', toastHtml);
+
+            setTimeout(() => {
+                const toast = document.getElementById(toastId);
+                if (toast) {
+                    toast.classList.remove('show');
+                    setTimeout(() => toast.remove(), 300);
+                }
+            }, 3000);
+        }
+
+        // Start exchange buttons
+        document.querySelectorAll('.start-exchange').forEach(button => {
+            button.addEventListener('click', function() {
+                showToast('Starting exchange process...', 'success', 'bi-arrow-left-right');
+                // In a real app, redirect to exchange page
+                setTimeout(() => {
+                    window.location.href = "{{ url_for('login') }}";
+                }, 1500);
+            });
+        });
+
+        // Start return buttons
+        document.querySelectorAll('.start-return, .start-return-process').forEach(button => {
+            button.addEventListener('click', function() {
+                // Validate form if on return form
+                const orderNumber = document.getElementById('orderNumber');
+                const email = document.getElementById('email');
+                
+                if (orderNumber && email && this.classList.contains('start-return-process')) {
+                    let isValid = true;
+                    
+                    if (!orderNumber.value.trim()) {
+                        orderNumber.classList.add('is-invalid');
+                        showToast('Please enter your order number', 'warning', 'bi-exclamation-triangle');
+                        isValid = false;
+                    } else {
+                        orderNumber.classList.remove('is-invalid');
+                    }
+                    
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!email.value.trim() || !emailRegex.test(email.value)) {
+                        email.classList.add('is-invalid');
+                        showToast('Please enter a valid email address', 'warning', 'bi-exclamation-triangle');
+                        isValid = false;
+                    } else {
+                        email.classList.remove('is-invalid');
+                    }
+                    
+                    if (!isValid) return;
+                }
+                
+                showToast('Starting return process...', 'info', 'bi-box-arrow-right');
+                setTimeout(() => {
+                    window.location.href = "{{ url_for('login') }}";
+                }, 1500);
+            });
+        });
+
+        // Find store button
+        document.querySelector('.find-store').addEventListener('click', function() {
+            showToast('Finding nearest stores...', 'info', 'bi-geo-alt');
+            // In a real app, open store locator
+        });
+
+        // Contact support button
+        document.querySelector('.contact-support').addEventListener('click', function() {
+            showToast('Opening support chat...', 'info', 'bi-headset');
+            // In a real app, open chat widget
+        });
+
+        // Live chat function
+        window.startLiveChat = function() {
+            showToast('Connecting to live chat...', 'info', 'bi-chat-dots');
+            // In a real app, open chat widget
+        };
+
+        // FAQ accordion tracking
+        document.querySelectorAll('.accordion-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const question = this.textContent.trim();
+                showToast(`FAQ: ${question}`, 'info', 'bi-question-circle');
+            });
+        });
+
+        // Form input validation on blur
+        const orderNumber = document.getElementById('orderNumber');
+        const email = document.getElementById('email');
+
+        if (orderNumber) {
+            orderNumber.addEventListener('blur', function() {
+                if (this.value.trim()) {
+                    this.classList.add('is-valid');
+                    this.classList.remove('is-invalid');
+                } else {
+                    this.classList.remove('is-valid');
+                }
+            });
+        }
+
+        if (email) {
+            email.addEventListener('blur', function() {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (emailRegex.test(this.value)) {
+                    this.classList.add('is-valid');
+                    this.classList.remove('is-invalid');
+                } else {
+                    this.classList.remove('is-valid');
+                }
+            });
+        }
+
+        // Animate counters on scroll
+        const observerOptions = {
+            threshold: 0.5,
+            rootMargin: '0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate__animated');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.card').forEach(card => {
+            observer.observe(card);
+        });
+
+        // Welcome message
+        setTimeout(() => {
+            showToast('🔄 Easy returns & exchanges within 30 days', 'success', 'bi-arrow-left-right');
+        }, 1500);
+
+        // Console greeting
+        console.log('🔄 Returns & Exchanges Page - Hassle-free returns');
+
+        // Expose functions globally
+        window.showToast = showToast;
+    })();
+</script>
+{% endblock %}

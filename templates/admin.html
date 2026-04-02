@@ -1,0 +1,741 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - ShopMetuge{% endblock %}
+
+{% block content %}
+<style>
+    /* Modern Admin Dashboard Styling */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+    :root {
+        --primary: #6366f1;
+        --primary-dark: #4f46e5;
+        --primary-light: #818cf8;
+        --secondary: #8b5cf6;
+        --success: #10b981;
+        --success-dark: #059669;
+        --success-light: #d1fae5;
+        --danger: #ef4444;
+        --danger-light: #fee2e2;
+        --warning: #f59e0b;
+        --warning-dark: #d97706;
+        --warning-light: #fef3c7;
+        --info: #3b82f6;
+        --info-dark: #2563eb;
+        --info-light: #dbeafe;
+        --gray-50: #f9fafb;
+        --gray-100: #f3f4f6;
+        --gray-200: #e5e7eb;
+        --gray-300: #d1d5db;
+        --gray-400: #9ca3af;
+        --gray-500: #6b7280;
+        --gray-600: #4b5563;
+        --gray-700: #374151;
+        --gray-800: #1f2937;
+        --gray-900: #111827;
+        
+        --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+        --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+        --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+        
+        --radius-sm: 0.375rem;
+        --radius: 0.5rem;
+        --radius-md: 0.75rem;
+        --radius-lg: 1rem;
+        --radius-xl: 1.5rem;
+        --radius-2xl: 2rem;
+        --radius-full: 9999px;
+        
+        --transition-fast: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+        --transition: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+        --transition-bounce: 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    /* Page Header */
+    .row.mt-4:first-child .col-md-12 h1 {
+        font-size: clamp(2rem, 4vw, 2.5rem);
+        font-weight: 800;
+        color: var(--gray-900);
+        margin: 2rem 0;
+        position: relative;
+        display: inline-block;
+        animation: slideInDown 0.6s ease-out;
+    }
+
+    .row.mt-4:first-child .col-md-12 h1::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 0;
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary), var(--secondary));
+        border-radius: var(--radius-full);
+        animation: expandWidth 0.8s ease-out 0.3s both;
+    }
+
+    .row.mt-4:first-child .col-md-12 h1 i {
+        color: var(--primary);
+        margin-right: 0.5rem;
+    }
+
+    /* Stats Cards Container */
+    .row.mt-4:nth-child(2) {
+        margin: 2rem -0.5rem;
+        animation: fadeInUp 0.8s ease-out;
+    }
+
+    .col-md-3.mb-3 {
+        padding: 0 0.5rem;
+        animation: fadeInUp 0.6s ease-out;
+        animation-fill-mode: both;
+    }
+
+    .col-md-3.mb-3:nth-child(1) { animation-delay: 0.1s; }
+    .col-md-3.mb-3:nth-child(2) { animation-delay: 0.2s; }
+    .col-md-3.mb-3:nth-child(3) { animation-delay: 0.3s; }
+    .col-md-3.mb-3:nth-child(4) { animation-delay: 0.4s; }
+
+    /* Stats Cards */
+    .card {
+        border: none !important;
+        border-radius: var(--radius-2xl) !important;
+        overflow: hidden;
+        transition: all var(--transition-bounce);
+        height: 100%;
+        position: relative;
+        box-shadow: var(--shadow-lg);
+        backdrop-filter: blur(10px);
+    }
+
+    .card:hover {
+        transform: translateY(-10px) scale(1.02);
+        box-shadow: var(--shadow-2xl);
+    }
+
+    .card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 100%);
+        opacity: 0;
+        transition: opacity var(--transition);
+    }
+
+    .card:hover::before {
+        opacity: 1;
+    }
+
+    .card.bg-primary {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark)) !important;
+    }
+
+    .card.bg-success {
+        background: linear-gradient(135deg, var(--success), var(--success-dark)) !important;
+    }
+
+    .card.bg-info {
+        background: linear-gradient(135deg, var(--info), var(--info-dark)) !important;
+    }
+
+    .card.bg-warning {
+        background: linear-gradient(135deg, var(--warning), var(--warning-dark)) !important;
+    }
+
+    /* Card Body */
+    .card-body {
+        padding: 2rem 1.5rem !important;
+        position: relative;
+        z-index: 1;
+    }
+
+    .card-title {
+        font-size: 1rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 1rem;
+        color: rgba(255, 255, 255, 0.9);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .card-title i {
+        font-size: 1.25rem;
+        background: rgba(255, 255, 255, 0.2);
+        padding: 0.5rem;
+        border-radius: var(--radius-lg);
+        transition: all var(--transition);
+    }
+
+    .card:hover .card-title i {
+        transform: rotate(360deg);
+        background: rgba(255, 255, 255, 0.3);
+    }
+
+    .card h2 {
+        font-size: clamp(1.5rem, 4vw, 2.5rem);
+        font-weight: 800;
+        color: white;
+        margin: 0;
+        line-height: 1.2;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .card h2 small {
+        font-size: 0.9rem;
+        font-weight: 400;
+        opacity: 0.8;
+    }
+
+    /* Card Decorations */
+    .card::after {
+        content: '';
+        position: absolute;
+        bottom: -20px;
+        right: -20px;
+        width: 100px;
+        height: 100px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        transition: all var(--transition);
+    }
+
+    .card:hover::after {
+        transform: scale(1.5);
+        opacity: 0.2;
+    }
+
+    /* Quick Actions Section */
+    .row.mt-4:last-child {
+        margin-top: 3rem !important;
+        animation: fadeInUp 0.8s ease-out 0.5s both;
+    }
+
+    .row.mt-4:last-child .col-md-12 {
+        background: white;
+        border-radius: var(--radius-2xl);
+        padding: 2rem;
+        box-shadow: var(--shadow-xl);
+        border: 1px solid var(--gray-200);
+    }
+
+    .row.mt-4:last-child h3 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--gray-800);
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .row.mt-4:last-child h3 i {
+        color: var(--primary);
+    }
+
+    .d-flex.gap-2 {
+        display: flex;
+        gap: 1rem !important;
+        flex-wrap: wrap;
+    }
+
+    /* Quick Action Buttons */
+    .btn {
+        padding: 1rem 2rem;
+        border-radius: var(--radius-lg);
+        font-weight: 600;
+        font-size: 1rem;
+        transition: all var(--transition-bounce);
+        border: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        position: relative;
+        overflow: hidden;
+        text-decoration: none;
+        box-shadow: var(--shadow);
+    }
+
+    .btn::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        transform: translate(-50%, -50%);
+        transition: width 0.6s, height 0.6s;
+    }
+
+    .btn:hover::before {
+        width: 300px;
+        height: 300px;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: var(--shadow-2xl);
+    }
+
+    .btn-secondary {
+        background: linear-gradient(135deg, var(--gray-600), var(--gray-700));
+        color: white;
+    }
+
+    .btn-secondary:hover {
+        background: linear-gradient(135deg, var(--gray-700), var(--gray-800));
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-2xl);
+    }
+
+    .btn-success {
+        background: linear-gradient(135deg, var(--success), var(--success-dark));
+        color: white;
+    }
+
+    .btn-success:hover {
+        background: linear-gradient(135deg, var(--success-dark), var(--success));
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: var(--shadow-2xl);
+    }
+
+    .btn i {
+        font-size: 1.2rem;
+        transition: transform var(--transition);
+    }
+
+    .btn:hover i {
+        transform: translateX(5px) scale(1.2);
+    }
+
+    .btn-secondary:hover i {
+        transform: translateX(-5px) scale(1.2);
+    }
+
+    /* Animations */
+    @keyframes slideInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes expandWidth {
+        from { width: 0; }
+        to { width: 80px; }
+    }
+
+    @keyframes countUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+
+    /* Toast Notification */
+    .toast-notification {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        background: linear-gradient(135deg, var(--success), #059669);
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-2xl);
+        transform: translateX(400px);
+        transition: transform 0.3s ease;
+        z-index: 9999;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .toast-notification.show {
+        transform: translateX(0);
+    }
+
+    .toast-notification i {
+        font-size: 1.25rem;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .col-md-3.mb-3 {
+            width: 50%;
+        }
+
+        .card-body {
+            padding: 1.5rem !important;
+        }
+
+        .card h2 {
+            font-size: 1.5rem;
+        }
+
+        .d-flex.gap-2 {
+            flex-direction: column;
+        }
+
+        .btn {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .row.mt-4:last-child .col-md-12 {
+            padding: 1.5rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .col-md-3.mb-3 {
+            width: 100%;
+        }
+
+        .row.mt-4:first-child .col-md-12 h1 {
+            font-size: 1.75rem;
+        }
+
+        .card-title {
+            font-size: 0.9rem;
+        }
+
+        .card h2 {
+            font-size: 1.25rem;
+        }
+
+        .row.mt-4:last-child h3 {
+            font-size: 1.25rem;
+        }
+    }
+
+    /* Dark Mode */
+    @media (prefers-color-scheme: dark) {
+        .row.mt-4:first-child .col-md-12 h1 {
+            color: white;
+        }
+
+        .row.mt-4:last-child .col-md-12 {
+            background: var(--gray-800);
+            border-color: var(--gray-700);
+        }
+
+        .row.mt-4:last-child h3 {
+            color: white;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--gray-700), var(--gray-800));
+        }
+    }
+
+    /* Loading Skeleton */
+    .skeleton {
+        background: linear-gradient(
+            90deg,
+            var(--gray-200) 25%,
+            var(--gray-300) 37%,
+            var(--gray-200) 63%
+        );
+        background-size: 400% 100%;
+        animation: skeleton-loading 1.4s ease infinite;
+    }
+
+    @keyframes skeleton-loading {
+        0% { background-position: 100% 50%; }
+        100% { background-position: 0 50%; }
+    }
+</style>
+
+<div class="row mt-4">
+    <div class="col-md-12">
+        <h1>
+            <i class="bi bi-speedometer2"></i>
+            Admin Dashboard
+        </h1>
+    </div>
+</div>
+
+<!-- Stats Cards -->
+<div class="row mt-4">
+    <div class="col-md-3 mb-3">
+        <div class="card bg-primary">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <i class="bi bi-box"></i>
+                    Total Products
+                </h5>
+                <h2 class="count-animate" id="totalProducts">{{ total_products }}</h2>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-3">
+        <div class="card bg-success">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <i class="bi bi-receipt"></i>
+                    Total Orders
+                </h5>
+                <h2 class="count-animate" id="totalOrders">{{ total_orders }}</h2>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-3">
+        <div class="card bg-info">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <i class="bi bi-hourglass-split"></i>
+                    Pending Orders
+                </h5>
+                <h2 class="count-animate" id="pendingOrders">{{ pending_orders }}</h2>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-3">
+        <div class="card bg-warning">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <i class="bi bi-currency-dollar"></i>
+                    Total Revenue
+                </h5>
+                <h2 class="count-animate" id="totalRevenue">{{ total_revenue|fcfa }} <small>FCFA</small></h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="row mt-4">
+    <div class="col-md-12">
+        <h3>
+            <i class="bi bi-lightning-charge"></i>
+            Quick Actions
+        </h3>
+        <div class="d-flex gap-2 mt-2">
+            <a href="{{ url_for('add_product') }}" class="btn-primary">
+                <i class="bi bi-plus-circle"></i> Add Product
+            </a>
+            <a href="{{ url_for('admin_products') }}" class="btn-secondary">
+                <i class="bi bi-box"></i> Manage Products
+            </a>
+            <a href="{{ url_for('commands_list') }}" class="btn-success">
+                <i class="bi bi-receipt"></i> View Orders
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Toast Container -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3"></div>
+
+<script>
+    // Modern JavaScript for Admin Dashboard
+    (function() {
+        'use strict';
+
+        // Toast notification system
+        function showToast(message, type = 'success', icon = 'bi-check-circle-fill') {
+            const toastContainer = document.querySelector('.toast-container');
+            if (!toastContainer) return;
+
+            const colors = {
+                success: 'linear-gradient(135deg, #10b981, #059669)',
+                warning: 'linear-gradient(135deg, #f59e0b, #d97706)',
+                danger: 'linear-gradient(135deg, #ef4444, #dc2626)',
+                info: 'linear-gradient(135deg, #3b82f6, #2563eb)'
+            };
+
+            const toastId = 'toast-' + Date.now();
+            const toastHtml = `
+                <div id="${toastId}" class="toast-notification show" style="background: ${colors[type] || colors.success}">
+                    <i class="bi ${icon}"></i>
+                    <div class="toast-message">${message}</div>
+                </div>
+            `;
+
+            toastContainer.insertAdjacentHTML('beforeend', toastHtml);
+
+            setTimeout(() => {
+                const toast = document.getElementById(toastId);
+                if (toast) {
+                    toast.classList.remove('show');
+                    setTimeout(() => toast.remove(), 300);
+                }
+            }, 3000);
+        }
+
+        // Counter animation
+        function animateCounter(element, start, end, duration) {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                const value = Math.floor(progress * (end - start) + start);
+                element.textContent = value.toLocaleString();
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                } else {
+                    element.textContent = end.toLocaleString();
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        // Animate all counters
+        document.querySelectorAll('.count-animate').forEach(counter => {
+            const text = counter.textContent;
+            // Check if it's a number (for revenue, we need to extract the number)
+            if (!isNaN(parseFloat(text)) && isFinite(text)) {
+                const endValue = parseInt(text);
+                animateCounter(counter, 0, endValue, 2000);
+            } else if (counter.id === 'totalRevenue') {
+                // Handle revenue with FCFA suffix
+                const match = text.match(/[\d\s]+/);
+                if (match) {
+                    const endValue = parseInt(match[0].replace(/\s/g, ''));
+                    let start = 0;
+                    const step = (timestamp) => {
+                        if (!start) start = timestamp;
+                        const progress = Math.min((timestamp - start) / 2000, 1);
+                        const value = Math.floor(progress * endValue);
+                        counter.innerHTML = `${value.toLocaleString()} <small>FCFA</small>`;
+                        if (progress < 1) {
+                            window.requestAnimationFrame(step);
+                        }
+                    };
+                    window.requestAnimationFrame(step);
+                }
+            }
+        });
+
+        // Welcome message
+        const totalProducts = parseInt(document.getElementById('totalProducts')?.textContent || '0');
+        const totalOrders = parseInt(document.getElementById('totalOrders')?.textContent || '0');
+        
+        setTimeout(() => {
+            showToast(`📊 Welcome back! ${totalProducts} products, ${totalOrders} orders`, 'info', 'bi-speedometer2');
+        }, 1500);
+
+        // Real-time update simulation (would need WebSocket in production)
+        function simulateUpdates() {
+            const intervals = [
+                { id: 'totalOrders', max: 5 },
+                { id: 'pendingOrders', max: 3 }
+            ];
+            
+            intervals.forEach(item => {
+                setInterval(() => {
+                    const element = document.getElementById(item.id);
+                    if (element && !element.classList.contains('count-animate')) {
+                        const current = parseInt(element.textContent) || 0;
+                        const increase = Math.floor(Math.random() * item.max);
+                        element.textContent = current + increase;
+                        element.classList.add('count-animate');
+                        
+                        // Show notification for significant updates
+                        if (increase > 0) {
+                            showToast(`📈 New ${item.id.replace(/([A-Z])/g, ' $1').toLowerCase()}!`, 'info', 'bi-graph-up');
+                        }
+                    }
+                }, 30000); // Every 30 seconds
+            });
+        }
+        
+        // Uncomment for demo: simulateUpdates();
+
+        // Quick action buttons animation
+        document.querySelectorAll('.btn-primary, .btn-secondary, .btn-success').forEach(button => {
+            button.addEventListener('click', function(e) {
+                // Don't prevent default - let the navigation happen
+                // But add a nice animation
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 200);
+                
+                const action = this.textContent.trim();
+                showToast(`🚀 Navigating to ${action}`, 'info', 'bi-arrow-right-circle');
+            });
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Alt + 1 for Add Product
+            if (e.altKey && e.key === '1') {
+                e.preventDefault();
+                window.location.href = "{{ url_for('add_product') }}";
+                showToast('📦 Opening Add Product', 'info', 'bi-plus-circle');
+            }
+            // Alt + 2 for Manage Products
+            if (e.altKey && e.key === '2') {
+                e.preventDefault();
+                window.location.href = "{{ url_for('admin_products') }}";
+                showToast('📋 Opening Product Management', 'info', 'bi-box');
+            }
+            // Alt + 3 for View Orders
+            if (e.altKey && e.key === '3') {
+                e.preventDefault();
+                window.location.href = "{{ url_for('commands_list') }}";
+                showToast('📄 Opening Orders List', 'info', 'bi-receipt');
+            }
+        });
+
+        // Console greeting
+        console.log('📊 Admin Dashboard - Business Intelligence Center');
+        console.log(`📦 Products: ${totalProducts}`);
+        console.log(`📋 Orders: ${totalOrders}`);
+        console.log(`⏳ Pending: ${document.getElementById('pendingOrders')?.textContent || '0'}`);
+        console.log(`💰 Revenue: ${document.getElementById('totalRevenue')?.textContent || '0'}`);
+
+        // Expose functions globally
+        window.showToast = showToast;
+    })();
+</script>
+{% endblock %}
